@@ -38,7 +38,7 @@ function App() {
   const protectedRoute = (userState: null | false | UserInformations) => {
     if (userState === null) return <LoadingScreen />;
     if (userState === false) return <SignIn />;
-    if (userState) return <Navigate to={"/dashboard"} />;
+    if (userState) return <Navigate to={"/SortedGames/dashboard"} />;
   };
 
   const loadingPhase = (
@@ -59,23 +59,26 @@ function App() {
           <SideMenu />
         </div>
         <Routes>
-          <Route path="/" element={loadingPhase(user, <Home />)} />
+          <Route path="/SortedGames/" element={loadingPhase(user, <Home />)} />
           <Route
-            path="/genre/:genreTitle/"
+            path="/SortedGames/genre/:genreTitle/"
             element={loadingPhase(user, <Genre />)}
           />
           <Route
-            path="/genre/:genreTitle?/:id"
+            path="/SortedGames/genre/:genreTitle?/:id"
             element={loadingPhase(user, <CompleteGameInfo />)}
           />
-          <Route path="/sign-in" element={protectedRoute(user)} />
+          <Route path="/SortedGames/sign-in" element={protectedRoute(user)} />
 
           <Route element={<PrivateRoutes />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/SortedGames/dashboard" element={<Dashboard />} />
           </Route>
 
-          <Route path="/search" element={loadingPhase(user, <Search />)} />
-          <Route path="*" element={<Dashboard />} />
+          <Route
+            path="/SortedGames/search"
+            element={loadingPhase(user, <Search />)}
+          />
+          {/* <Route path="/SortedGames/Support" element={<Dashboard />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

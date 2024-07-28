@@ -44,7 +44,7 @@ const Dashboard = () => {
               >
                 <div className="size-[54px] grid place-items-end pb-1">
                   <img
-                    src="/icons/saved-games.svg"
+                    src="/SortedGames/icons/saved-games.svg"
                     alt="heart icon"
                     className="size-[px]"
                   />
@@ -56,7 +56,7 @@ const Dashboard = () => {
                 onClick={() => setPickOption("avatars")}
               >
                 <img
-                  src="/images/avatars/withBackground/batman.svg"
+                  src="/SortedGames/images/avatars/withBackground/batman.svg"
                   alt="batman"
                   className="size-[54px]"
                 />

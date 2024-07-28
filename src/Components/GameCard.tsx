@@ -17,11 +17,10 @@ const GameCard = ({ card }: { card: GameMiniCard }) => {
         className={`h-full w-full rounded-xl border-2 border-transparent transition-all cursor-pointer hover:border-[#7C61EC]`}
         onClick={(e) => {
           const target = e.target as HTMLElement;
-          console.log(!target.classList.contains("saveGame"), target);
           if (!target.classList.contains("saveGame")) {
             dispatch({ type: "header/setBackButton", payload: true });
             dispatch({ type: "sidemenu/setOpenSidemenu", payload: false }); // Sidmenu closes when a game card is clicked.
-            navigate(`/genre/${genre}/${id}`);
+            navigate(`/SortedGames/genre/${genre}/${id}`);
             return;
           }
         }}

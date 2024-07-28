@@ -11,7 +11,7 @@ const GenresList = ({ genresState }: { genresState: boolean }) => {
   const desktop = useMediaQuery("(min-width: 1024px)");
 
   // Image paths for the genres
-  const corePath = "/images/thumbnails/thumbnail-";
+  const corePath = "/SortedGames/images/thumbnails/thumbnail-";
   const genres = [
     { src: `${corePath}open_world.jpg`, title: "Open world" },
     { src: `${corePath}battle-royale.jpg`, title: "Battle Royale" },
@@ -50,7 +50,7 @@ const GenresList = ({ genresState }: { genresState: boolean }) => {
           return (
             <li key={genre.title}>
               <NavLink
-                to={`/genre/${param.toLowerCase()}`}
+                to={`/SortedGames/genre/${param.toLowerCase()}`}
                 className="flex items-center gap-4"
                 onClick={onNavLink}
               >

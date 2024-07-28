@@ -6,8 +6,9 @@ const Header = ({ scrollPosition }: { scrollPosition: number }) => {
   const { pathname } = useLocation();
 
   const appNavigation = () => {
-    if (pathname.includes("/genre/")) return navigate(-1);
-    if (!pathname.includes("/genre/")) return navigate("/");
+    if (pathname.includes("/SortedGames/genre/")) return navigate(-1);
+    if (!pathname.includes("/SortedGames/genre/"))
+      return navigate("/SortedGames/");
   };
 
   return (
@@ -25,7 +26,7 @@ const Header = ({ scrollPosition }: { scrollPosition: number }) => {
         >
           {pathname.includes("/genre/") ? (
             <img
-              src="/icons/go-back-icon.svg"
+              src="/SortedGames/icons/go-back-icon.svg"
               alt="Applikation icon"
               aria-label="button"
               tabIndex={0}
@@ -33,7 +34,7 @@ const Header = ({ scrollPosition }: { scrollPosition: number }) => {
             />
           ) : (
             <img
-              src="/icons/helmet.svg"
+              src="/SortedGames/icons/helmet.svg"
               alt="Applikation icon"
               className="relative z-0 size-12"
               title="Go to home page"

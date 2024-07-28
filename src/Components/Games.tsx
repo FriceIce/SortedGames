@@ -37,8 +37,6 @@ const Games = () => {
 
     Promise.all(allFetches).then((data) => {
       // The same order as the allFetches array.
-      console.log(data);
-
       dispatch({ type: "games/cacheGames", payload: data });
       setIsPending(false);
       return;

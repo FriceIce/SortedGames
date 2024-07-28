@@ -50,7 +50,8 @@ export const register = async (
       data: {
         ...body,
         password: hasedPassword,
-        profileImg: "/images/avatars/withBackground/avocado-rambler.svg",
+        profileImg:
+          "/SortedGames/images/avatars/withBackground/avocado-rambler.svg",
       },
     });
 

@@ -6,14 +6,17 @@ import { GameMiniCard } from "../../definitions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 const Search = () => {
   // Use a state to display content for user Search results.
   const [input, setInput] = React.useState<string>("");
   const games = useSelector((state: RootState) => state.games.searchGames);
+  const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
   const dispatch = useDispatch();
 
-  const debounce = useDebounce(input.trim(), 500);
+  const debounce = useDebounce(input.trim(), 500); //500ms delay before fetching games
+  const desktop = useMediaQuery("(min-width: 1024px)"); // Tailwind lg screen size
 
   const { data } = useFetch(
     gameUrl(false, "games"),
@@ -54,7 +57,11 @@ const Search = () => {
     return null; // Everything except null is truthy in this case only.
   };
   return (
-    <section className="space-y-6 mt-10">
+    <section
+      className={`space-y-6 mt-10 transition-all duration-200 ${
+        desktop && sidemenu && "ml-[210px]"
+      }`}
+    >
       <form
         className="flex gap-2 items-center border h-[42px] rounded-xl pr-2 w-5/6 mx-auto"
         onSubmit={onSearch}
@@ -68,7 +75,7 @@ const Search = () => {
         />
         <button className="flex-grow-0">
           <img
-            src="/icons/search-icon-without-circle.svg"
+            src="/SortedGames/icons/search-icon-without-circle.svg"
             alt="search icon"
             className="size-6"
           />

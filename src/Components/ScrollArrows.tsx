@@ -22,7 +22,7 @@ const ScrollArrows = ({
             onClick={prevSlide}
           >
             <img
-              src="/icons/chevron-left.svg"
+              src="/SortedGames/icons/chevron-left.svg"
               alt="chevron left arrow"
               className="size-8"
             />
@@ -32,7 +32,7 @@ const ScrollArrows = ({
             onClick={nextSlide}
           >
             <img
-              src="/icons/chevron-right.svg"
+              src="/SortedGames/icons/chevron-right.svg"
               alt="chevron left arrow"
               className="size-10"
             />

@@ -13,7 +13,7 @@ export const gameUrl = (
   value?: string
 ) => {
   return json
-    ? `/database/category/${endpoint}.json`
+    ? `/SortedGames/database/category/${endpoint}.json`
     : `https://free-to-play-games-database.p.rapidapi.com/api/${endpoint}?${query}=${value}`;
 };
 

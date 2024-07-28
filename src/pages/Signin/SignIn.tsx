@@ -33,7 +33,7 @@ const SignIn = () => {
       {/* Google button */}
       <div className="bg-white flex justify-center items-center gap-2 h-[38px] rounded-3xl mt-14 ">
         <img
-          src="/icons/google-icon.svg"
+          src="/SortedGames/icons/google-icon.svg"
           alt="google icon."
           className="size-6"
         />

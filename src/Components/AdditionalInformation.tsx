@@ -35,8 +35,8 @@ const AdditionalInformation = ({ game }: { game: Game }) => {
             <img
               src={
                 game.platform.toLocaleLowerCase() === "windows"
-                  ? "/icons/pc-icon.svg"
-                  : "/icons/browser-icon.svg"
+                  ? "/SortedGames/icons/pc-icon.svg"
+                  : "/SortedGames/icons/browser-icon.svg"
               }
               alt={`${game.platform} icon.`}
               className="size-4"

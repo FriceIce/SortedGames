@@ -79,7 +79,9 @@ const SaveGameComponent = ({ gameCard }: { gameCard: GameMiniCard }) => {
           onClick={saveOrRemoveGame}
         >
           <img
-            src={`/icons/${likeBtn ? "liked-heart-icon" : "heart-icon"}.svg`}
+            src={`/SortedGames/icons/${
+              likeBtn ? "liked-heart-icon" : "heart-icon"
+            }.svg`}
             alt="heart icon to save a specific game"
             className="size-4 saveGame "
           />

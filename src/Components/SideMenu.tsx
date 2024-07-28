@@ -40,8 +40,11 @@ const SideMenu = () => {
     }
   }, [sidemenu]);
 
-  const wait = (path: string) => {
-    dispatch({ type: "sidemenu/setOpenSidemenu", payload: !sidemenu });
+  const wait = (path: string, desktop: boolean) => {
+    //If the user uses an ipad or mobile, the sidmenu should close after options is clicked.
+    if (!desktop)
+      dispatch({ type: "sidemenu/setOpenSidemenu", payload: !sidemenu });
+
     return setTimeout(() => navigate(path), 150);
   };
   return (
@@ -61,20 +64,20 @@ const SideMenu = () => {
             onClick={() => {
               if (!user) {
                 setOpenGenresList((prevState) => !prevState);
-                wait("/sign-in"); //Send user to sign in if not signed in.
+                wait("/SortedGames/sign-in", false); //Send user to sign in if not signed in.
               }
               if (user) setOpenProfileList((prev) => !prev);
             }}
           >
             <img
-              src={user ? user.profileImg : "/icons/user_light.svg"}
+              src={user ? user.profileImg : "/SortedGames/icons/user_light.svg"}
               alt="sign in icon"
               className="size-6"
             />
             <p>{user ? "Profile" : "Sign in"}</p>
             {user && (
               <img
-                src="/icons/polygon.svg"
+                src="/SortedGames/icons/polygon.svg"
                 alt="Polygon icon"
                 className={`size-2 transition-all duration-300 ${
                   !profile && "rotate-[-180deg]"
@@ -91,7 +94,7 @@ const SideMenu = () => {
               className="min-h-0 overflow-hidden text-xs space-y-2 ml-4 w-max list-disc list-inside"
               onClick={() => {
                 setOpenProfileList((prev) => !prev);
-                wait("/dashboard");
+                wait("/SortedGames/dashboard", desktop);
               }}
             >
               <li className="mt-2">Go to profile.</li>
@@ -107,9 +110,12 @@ const SideMenu = () => {
           </div>
         </div>
         {/* Search-inputfield */}
-        <div className="flex gap-2" onClick={() => wait("/search")}>
+        <div
+          className="flex gap-2"
+          onClick={() => wait("/SortedGames/search", desktop)}
+        >
           <img
-            src="/icons/search-icon-cont.svg"
+            src="/SortedGames/icons/search-icon-cont.svg"
             alt="search icon"
             className="size-6 mt-[1px] mb-[4px]"
           />
@@ -119,11 +125,15 @@ const SideMenu = () => {
         {/* Home option */}
         <div
           className={`flex items-center gap-2 w-max pr-2 pb-1 ${
-            pathname === "/" && "border-b-2 border-white"
+            pathname === "/SortedGames" && "border-b-2 border-white"
           }`}
-          onClick={() => wait("/")}
+          onClick={() => wait("/SortedGames", desktop)}
         >
-          <img src="/icons/home.svg" alt="Home icon" className="size-6" />
+          <img
+            src="/SortedGames/icons/home.svg"
+            alt="Home icon"
+            className="size-6"
+          />
           <p>Home</p>
         </div>
 
@@ -138,13 +148,13 @@ const SideMenu = () => {
             onClick={() => setOpenGenresList((prevState) => !prevState)}
           >
             <img
-              src="/icons/genres-icon.svg"
+              src="/SortedGames/icons/genres-icon.svg"
               alt="Genre Icon as an Atom"
               className="size-6"
             />
             <p>Genres</p>
             <img
-              src="/icons/polygon.svg"
+              src="/SortedGames/icons/polygon.svg"
               alt="Polygon icon"
               className={`size-2 transition-all duration-300 ${
                 !genresList && "rotate-[-180deg]"
@@ -156,7 +166,11 @@ const SideMenu = () => {
 
         {/* API section */}
         <div className="flex gap-2">
-          <img src="/icons/api-icon.svg" alt="API icon" className="size-6" />
+          <img
+            src="/SortedGames/icons/api-icon.svg"
+            alt="API icon"
+            className="size-6"
+          />
           <p className="">API</p>
         </div>
       </div>

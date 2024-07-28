@@ -26,7 +26,6 @@ const CompleteGameInfo = () => {
         "description"
       ) as HTMLParagraphElement;
       const height = element.offsetHeight;
-      console.log(height);
       setHeight(height);
       return;
     };
@@ -69,7 +68,7 @@ const CompleteGameInfo = () => {
                   >
                     <p className="">PLAY NOW</p>
                     <img
-                      src="/icons/play-now.svg"
+                      src="/SortedGames/icons/play-now.svg"
                       alt="arrow icon"
                       className="size-6"
                     />
