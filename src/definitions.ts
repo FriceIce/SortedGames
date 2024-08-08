@@ -64,11 +64,9 @@ export type FormValues = {
 };
 
 export type UserInformations = {
-  userId: number;
-  email?: string;
+  email: string;
   username: string;
   profileImg: string;
-  token: string;
 };
 
 export type Inputfield = {

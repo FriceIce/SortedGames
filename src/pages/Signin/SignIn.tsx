@@ -1,13 +1,18 @@
 import React from "react";
-import Inputfield from "../../Components/Inputfield";
 import { useDispatch } from "react-redux";
+import Inputfield from "../../Components/Inputfield";
 
 // React hook form
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import type { FormValues } from "../../definitions";
-import { userUrl } from "../../modules/fetchOptions";
-import fetchUserData from "../../modules/fetchUser";
 import { googleAuth } from "../../modules/googleAuth";
+
+//firebase
+import { auth, createUser, readUserData } from "../../firebase/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const SignIn = () => {
   const [createAccount, setCreateAccount] = React.useState<boolean>(false);
@@ -20,12 +25,28 @@ const SignIn = () => {
   // submit function for form validation
   const onSubmit: SubmitHandler<FormValues> = (formValues) => {
     // console.log(formValues);
+    const { email, password, username } = formValues;
+    const profileImgPath =
+      "/SortedGames/images/avatars/withBackground/avocado-rambler.svg";
 
-    if (createAccount)
-      fetchUserData(userUrl("register"), dispatch, null, formValues);
+    if (createAccount && username)
+      createUserWithEmailAndPassword(auth, email, password).then(
+        (userCredentials) => {
+          const user = userCredentials.user;
+          createUser(user.uid, email, username, profileImgPath);
+          // console.log(userCredentials.user);
+        }
+      );
     if (!createAccount)
-      fetchUserData(userUrl("login"), dispatch, null, formValues);
-
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+          const user = userCredentials.user;
+          readUserData(user.uid);
+          // console.log(userCredentials.user);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     // navigate("/dashboard");
   };
 
