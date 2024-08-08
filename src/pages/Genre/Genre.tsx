@@ -1,12 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import GameCard from "../../Components/GameCard";
 import GameFilter from "../../Components/GameFilter";
 import { FilterOptions, GameMiniCard } from "../../definitions";
 import { fetchGames } from "../../modules/fetchGames";
 import { optionsForGamesFetching } from "../../modules/fetchOptions";
-import GameCard from "../../Components/GameCard";
-import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import useScrollToTop from "../../hooks/useScrollToTop";
 
 const Genre = () => {
   const [data, setData] = React.useState<GameMiniCard[]>([]);
@@ -19,6 +20,9 @@ const Genre = () => {
   // url
   const allUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genreTitle}`;
   const alpahabeticalUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genreTitle}&sort-by=${filterOption}`;
+
+  console.log(genreTitle);
+  useScrollToTop([genreTitle]);
 
   React.useEffect(() => {
     if (filterOption === "all")
@@ -59,7 +63,7 @@ const Genre = () => {
           </h1>
         )}
         <ul className={`card-grid w-full`}>
-          {data.map((data, index) => {
+          {data.map((data) => {
             const platform = data.platform.toLowerCase().includes(filterOption);
             if (filterOption === "all" || filterOption === "alphabetical")
               return gameCard(data);

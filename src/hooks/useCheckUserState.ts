@@ -11,6 +11,25 @@ export const useCheckUserState = (user: false | UserInformations | null) => {
 
   React.useEffect(() => {
     if (user === null && cookies.user === undefined) {
+      const googleQueryString = window.location.search;
+      const value = new URLSearchParams(googleQueryString);
+      // extract values from google query string
+      const id = value.get("userId");
+      const token = value.get("token");
+      const username = value.get("username");
+      const profileImg = value.get("profileImg");
+
+      if (googleQueryString) {
+        console.log("googleQueryString");
+
+        dispatch({
+          type: "user/setUserState",
+          payload: { userId: id, token, username, profileImg },
+        });
+
+        return;
+      }
+
       console.log("The user was never signed in. Setting user state to false");
       setTimeout(
         () => dispatch({ type: "user/setUserState", payload: false }),
@@ -24,11 +43,11 @@ export const useCheckUserState = (user: false | UserInformations | null) => {
         "The user is logged in, but the token is not set. Creating a cookie with user information"
       );
       setCookie("user", JSON.stringify({ ...user }), {
-        path: "/",
+        path: "/SortedGames/",
         httpOnly: false,
         secure: true,
       });
-      // console.log("The cookie is set!");
+      console.log("The cookie is set.");
     }
 
     if (user === null && cookies.user) {
@@ -43,10 +62,12 @@ export const useCheckUserState = (user: false | UserInformations | null) => {
     }
 
     if (user === false && cookies.user) {
+      console.log(user);
+      const domain = window.location.hostname;
       // console.log("User signed out and the cookie session is now invalid.");
       removeCookie("user", {
-        path: "/",
-        domain: "localhost",
+        path: "/SortedGames/",
+        domain: domain,
       });
       return;
     }
@@ -56,6 +77,7 @@ export const useCheckUserState = (user: false | UserInformations | null) => {
     // console.log("Inside the cookie useEffect");
 
     const fetchSavedGames = async () => {
+      if (user) return;
       const savedGames: { data: GameMiniCard[]; message: string } | null =
         await fetchGames(
           userUrl("allSavedGames", cookies.user.userId),
@@ -87,3 +109,13 @@ export const useCheckUserState = (user: false | UserInformations | null) => {
 
   return;
 };
+
+// setCookie(
+//   "user",
+//   JSON.stringify({ userId: id, token, username, profileImg }),
+//   {
+//     path: "/SortedGames/",
+//     httpOnly: false,
+//     secure: true,
+//   }
+// );

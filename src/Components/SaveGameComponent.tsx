@@ -15,11 +15,12 @@ const SaveGameComponent = ({ gameCard }: { gameCard: GameMiniCard }) => {
   const { latestLikedId, latestRemovedLikeId } = useSelector(
     (state: RootState) => state.user
   );
-  const user = useSelector((state: RootState) => state.user.user);
-  const [cookies] = useCookies(["user"]);
 
+  const user = useSelector((state: RootState) => state.user.user);
   const { savedGames } = useSelector((state: RootState) => state.user);
+  const [cookies] = useCookies(["user"]);
   const dispatch = useDispatch();
+
   // Checks if this game card i already liked.
   React.useEffect(() => {
     if (!user) return setLikeBtn(false);
@@ -48,6 +49,8 @@ const SaveGameComponent = ({ gameCard }: { gameCard: GameMiniCard }) => {
   const saveOrRemoveGame = () => {
     if (!user) return; //If user is not online then leave this function.
 
+    // The server only requrie id, thumbnail and title
+    const { id, thumbnail, title } = gameCard;
     const { userId, token } = cookies.user;
     const param = `${userId}-${gameCard.id}`;
 
@@ -55,7 +58,7 @@ const SaveGameComponent = ({ gameCard }: { gameCard: GameMiniCard }) => {
       console.log("Saving the game card...");
       fetchGames(
         userUrl(`saveGameDetails`, param),
-        optionsWithBody("POST", { ...gameCard }, token)
+        optionsWithBody("POST", { id, thumbnail, title }, token)
       );
       dispatch({ type: "user/setSaveGame", payload: gameCard });
     }
@@ -75,7 +78,8 @@ const SaveGameComponent = ({ gameCard }: { gameCard: GameMiniCard }) => {
     <>
       {likeBtn !== null && (
         <div
-          className="grid place-items-center bg-[#4b4f59] h-6 w-[27px] rounded-md saveGame"
+          title="Save game"
+          className="grid place-items-center bg-gray-600 h-6 w-[27px] rounded-md cursor-pointer saveGame"
           onClick={saveOrRemoveGame}
         >
           <img

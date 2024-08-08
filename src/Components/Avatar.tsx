@@ -9,17 +9,14 @@ import { useCookies } from "react-cookie";
 
 const Avatar = () => {
   const { user } = useSelector((state: RootState) => state.user);
-  const [currentProfilepic, setcurrentProfilepic] = React.useState<
-    string | null
-  >(null);
   const [data, setData] = React.useState<AvatarWithBackground>({
     withBackground: [],
   });
-  const [cookie, setCookie] = useCookies(["user"]);
+  const [, /* cookie */ setCookie] = useCookies(["user"]);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    fetchGames("/database/avatars/avatars.json", null, setData);
+    fetchGames("/SortedGames/database/avatars/avatars.json", null, setData);
   }, []);
 
   const setProfileImg = (avatarSrc: string | null) => {
@@ -32,9 +29,8 @@ const Avatar = () => {
       user.token
     );
     fetchUserData(userUrl("profileImage"), dispatch, option);
-    setcurrentProfilepic(avatarSrc);
     setCookie("user", JSON.stringify({ ...user, profileImg: avatarSrc }), {
-      path: "/",
+      path: "/SortedGames/",
       httpOnly: false,
       secure: true,
     });
@@ -53,7 +49,7 @@ const Avatar = () => {
                 return (
                   <li
                     key={avatar.id}
-                    className={`flex-1 flex flex-col gap-2 items-center text-nowrap p-2 border-2 rounded-xl ${
+                    className={`flex-1 flex flex-col gap-2 items-center text-nowrap p-2 border-2 rounded-xl transition-all cursor-pointer hover:border-[#7d61ec] ${
                       currentAvatar ? "border-[#7d61ec]" : "border-transparent"
                     }`}
                     onClick={() => setProfileImg(avatar.src)}

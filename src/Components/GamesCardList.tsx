@@ -2,7 +2,7 @@ import React from "react";
 import GameCard from "./GameCard";
 import ScrollArrows from "./ScrollArrows";
 import { GameMiniCard } from "../definitions";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 const GamesCardList = ({
@@ -10,20 +10,23 @@ const GamesCardList = ({
   classNameLI,
   gamesList,
   arrows,
+  position,
 }: {
   classNameUL: string;
   classNameLI: string;
   gamesList: GameMiniCard[];
   arrows: boolean;
+  position: number;
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState<number>(0);
-  const [currentDotIndex, setCurrentDotIndex] = React.useState<number>(0);
-  const { pathname } = useLocation();
+  const [, /* currentDotIndex */ setCurrentDotIndex] =
+    React.useState<number>(0);
+  // const { pathname } = useLocation();
 
   // This is for media queries and also for calulating how many dots should be added under the slide.
   const screenWidthForMultiCards = useMediaQuery("(min-width: 1000px)"); // minimum three cards.
-  const screenWidthForCards = useMediaQuery("(min-width: 1455px)");
-  const screenWidthFiveCards = useMediaQuery("(min-width: 1784px)");
+  // const screenWidthForCards = useMediaQuery("(min-width: 1455px)");
+  // const screenWidthFiveCards = useMediaQuery("(min-width: 1784px)");
 
   const prevSlide = () => {
     console.log(screenWidthForMultiCards, currentIndex);
@@ -44,15 +47,12 @@ const GamesCardList = ({
 
   // When currentIndex changes this function will update the slide with the useEffect below this function.
   const slideToContainer = (gameIndex: number): void => {
-    const game = document.getElementById(`game-${gameIndex}`) as HTMLLIElement;
+    const game = document.getElementById(
+      `game-${gameIndex}-${position}`
+    ) as HTMLLIElement;
     game.scrollIntoView({
-      behavior:
-        // This makes so that the carousel wont smoothly scroll through the element when clicking on a dot thats is more than 3 steps away from current index position
-        (gameIndex - currentIndex > 2 && !screenWidthForMultiCards) ||
-        (currentIndex - gameIndex > 2 && !screenWidthForMultiCards)
-          ? "instant"
-          : "smooth",
-      block: "end",
+      behavior: "smooth",
+      block: screenWidthForMultiCards ? "nearest" : "nearest",
       inline: screenWidthForMultiCards ? "start" : "center", //
     });
 
@@ -61,7 +61,7 @@ const GamesCardList = ({
   };
 
   React.useEffect(() => {
-    slideToContainer(currentIndex);
+    if (screenWidthForMultiCards) slideToContainer(currentIndex);
   }, [currentIndex]);
 
   return (
@@ -70,44 +70,46 @@ const GamesCardList = ({
       prevSlide={prevSlide}
       nextSlide={nextSlide}
     >
-      <ul className={classNameUL} id="gamesList">
+      <ul
+        className={`${classNameUL} snap-x snap-mandatory`}
+        id={`gamesList-${position}`}
+      >
         {gamesList.map((card, index: number) => {
           return (
             <li
               key={index}
-              className={
-                currentIndex !== index && arrows && !screenWidthForMultiCards
-                  ? `${classNameLI} scale-[95%]`
-                  : classNameLI
-              }
-              id={`game-${index}`}
+              className={`${classNameLI} ${
+                index === 0 && position !== 3 && `ml-2`
+              } snap-center`}
+              id={`game-${index}-${position}`}
             >
-              <GameCard card={card} />
+              <GameCard card={card} position={position} />
             </li>
           );
         })}
       </ul>
 
-      {arrows && pathname === "/" && (
+      {/* {arrows && pathname === "/SortedGames/" && (
         <ul className="flex gap-3 w-max mt-3 mx-auto" id="games">
           {gamesList.map((dot, gameIndex) => {
             if (screenWidthFiveCards && gameIndex > 2) return null;
             if (screenWidthForCards && gameIndex > 2) return null;
             if (screenWidthForMultiCards && gameIndex > 3) return null;
+            if (!screenWidthForMultiCards) return null;
 
             return (
-              <div
-                key={gameIndex}
+              <li
+                key={dot.title}
                 className={`size-[6px] flex-none rounded-full transition-all duration-200 ${
                   currentDotIndex === gameIndex
                     ? "bg-[#7C61EC] scale-125"
                     : "bg-white scale-75"
                 }`}
-              ></div>
+              ></li>
             );
           })}
         </ul>
-      )}
+      )} */}
     </ScrollArrows>
   );
 };

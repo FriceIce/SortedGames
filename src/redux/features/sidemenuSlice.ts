@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: {
-  sidemenu: boolean;
+  sidemenu: boolean | null;
   inputfield: boolean;
 } = {
-  sidemenu: false,
+  sidemenu: null,
   inputfield: false,
 };
 

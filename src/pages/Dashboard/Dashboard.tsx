@@ -15,7 +15,7 @@ const Dashboard = () => {
     <>
       {user && (
         <div
-          className={`space-y-7 transition-all duration-200 ${
+          className={`space-y-7 mt-8 transition-all duration-200 ${
             sidemenu && "lg:ml-[277px]"
           }`}
         >
@@ -42,7 +42,7 @@ const Dashboard = () => {
                 className="flex flex-col items-center gap-1"
                 onClick={() => setPickOption("saved games")}
               >
-                <div className="size-[54px] grid place-items-end pb-1">
+                <div className="size-[54px] grid place-items-end pb-1 cursor-pointer">
                   <img
                     src="/SortedGames/icons/saved-games.svg"
                     alt="heart icon"
@@ -52,7 +52,7 @@ const Dashboard = () => {
                 <p className="text-xs">Saved Games</p>
               </div>
               <div
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center gap-1 cursor-pointer"
                 onClick={() => setPickOption("avatars")}
               >
                 <img

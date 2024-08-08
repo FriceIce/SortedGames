@@ -17,9 +17,9 @@ export type GameMiniCard = {
 
 export type GamesList = {
   popular: GameMiniCard[];
-  openWorld: GameMiniCard[];
-  PC: GameMiniCard[];
-  browser: GameMiniCard[];
+  allGames: GameMiniCard[];
+  fighting: GameMiniCard[];
+  MOBA: GameMiniCard[];
   searchGames: GameMiniCard[];
 };
 
@@ -64,8 +64,8 @@ export type FormValues = {
 };
 
 export type UserInformations = {
-  id: number;
-  email: string;
+  userId: number;
+  email?: string;
   username: string;
   profileImg: string;
   token: string;

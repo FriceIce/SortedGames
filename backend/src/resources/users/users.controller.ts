@@ -2,7 +2,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { prisma } from "../../db/connect";
 import { NextFunction, Request, Response } from "express";
+import url from "url";
 import dotenv from "dotenv";
+import { json } from "body-parser";
+import { profile } from "console";
 dotenv.config();
 
 /**
@@ -30,20 +33,9 @@ export const register = async (
       },
     });
 
-    const existingUsername = await prisma.user.findUnique({
-      where: {
-        username: lowerCase(username),
-      },
-    });
-
     if (existingEmail)
       return res.status(400).json({
         message: "The email is already in use. Please use a different email.",
-      });
-    if (existingUsername)
-      return res.status(400).json({
-        message:
-          "The username is already in use. Please enter a different username.",
       });
 
     const registerUser = await prisma.user.create({
@@ -68,7 +60,7 @@ export const register = async (
  *@route POST /login
  */
 export const login = async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
+  const { googleLogin, username, email, password } = req.body;
 
   try {
     const checkForUser = await prisma.user.findUnique({
@@ -97,17 +89,28 @@ export const login = async (req: Request, res: Response) => {
     // Create JWT token
     const token = jwt.sign({ id: checkForUser.id }, process.env.JWT_SECRET);
 
+    const userData = {
+      userId: checkForUser.id,
+      username: checkForUser.username,
+      profileImg: checkForUser.profileImg,
+      token: token,
+    };
+
+    if (googleLogin) {
+      console.log("Google login.");
+      return res.redirect(
+        url.format({
+          pathname: "http://localhost:5173/SortedGames/",
+          query: userData,
+        })
+      );
+    }
+
     res.json({
       message: username
         ? "User was created and logged in successfully."
         : "User was logged in successfully.",
-      user: {
-        userId: checkForUser.id,
-        email: checkForUser.email,
-        username: checkForUser.username,
-        profileImg: checkForUser.profileImg,
-        token: token,
-      },
+      user: userData,
     });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
@@ -120,12 +123,13 @@ export const login = async (req: Request, res: Response) => {
  */
 
 export const profileImage = async (req: Request, res: Response) => {
-  const { email, profileImg } = req.body;
+  console.log("Running profileImage route...");
+  const { userId, profileImg } = req.body;
 
   try {
     const user = await prisma.user.update({
       where: {
-        email: email,
+        id: userId,
       },
       data: {
         profileImg: profileImg,
@@ -137,6 +141,10 @@ export const profileImage = async (req: Request, res: Response) => {
       user: { ...req.body },
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      message:
+        "Sorry, something went wrong while trying to change the profile picture.",
+    });
+    console.log("Finished the profileImage route with failure...");
   }
 };

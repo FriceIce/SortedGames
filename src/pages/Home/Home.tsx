@@ -6,7 +6,9 @@ const Home = () => {
   const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
   return (
     <>
-      <main className={`transition-all ${sidemenu && "lg:ml-[210px]"}`}>
+      <main
+        className={`transition-all duration-200 ${sidemenu && "lg:ml-[210px]"}`}
+      >
         <Games />
       </main>
     </>

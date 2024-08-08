@@ -5,6 +5,7 @@ import cors from "cors";
 // routes import.
 import userRoutes from "./resources/users/users.routes";
 import gameRoutes from "./resources/games/games.routes";
+import googleAuth from "./resources/googleAuth/googleAuth.routes";
 
 // dotenv
 dotenv.config();
@@ -25,5 +26,6 @@ app.use(
 // routes.
 app.use("/api", userRoutes);
 app.use("/api", gameRoutes);
+app.use("/api", googleAuth);
 
-app.listen(port, () => console.log("Server is running from port", port));
+app.listen(port, () => console.log("Server is running on port", port));

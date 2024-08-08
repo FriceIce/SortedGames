@@ -1,11 +1,18 @@
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GameMiniCard } from "../definitions";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
-const GameCard = ({ card }: { card: GameMiniCard }) => {
+const GameCard = ({
+  card,
+  position,
+}: {
+  card: GameMiniCard;
+  position?: number;
+}) => {
   const dispatch = useDispatch();
   const { genreTitle } = useParams();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const desktop = useMediaQuery("(min-width: 1024px)");
@@ -26,7 +33,12 @@ const GameCard = ({ card }: { card: GameMiniCard }) => {
         }}
       >
         <div
-          className={`flex items-end justify-center w-full h-[200px] bg-center bg-no-repeat bg-cover  brightness-105 rounded-xl ${
+          className={`flex items-end justify-center w-full h-[200px] ${
+            (position === 3 ||
+              pathname === "/SortedGames/search" ||
+              pathname.includes("/SortedGames/genre")) &&
+            "xs:h-[140px]"
+          } bg-center bg-no-repeat bg-cover brightness-105 rounded-xl ${
             genreTitle && "savegame"
           }`}
           style={{
@@ -38,7 +50,12 @@ const GameCard = ({ card }: { card: GameMiniCard }) => {
               !desktop ? "opacity-100" : "opacity-0 h-full"
             } w-full h-10 grid place-items-center rounded-b-xl hover:opacity-100 hover:rounded-xl`}
           >
-            <h2 className="text-white font-bold text-sm text-wrap text-center truncate">
+            <h2
+              className={`text-white font-bold text-sm text-wrap text-center truncate ${
+                (position === 3 || pathname === "/SortedGames/search") &&
+                "xs:text-xs"
+              }`}
+            >
               {title}
             </h2>
           </div>

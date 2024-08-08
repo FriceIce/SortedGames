@@ -7,6 +7,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import type { FormValues } from "../../definitions";
 import { userUrl } from "../../modules/fetchOptions";
 import fetchUserData from "../../modules/fetchUser";
+import { googleAuth } from "../../modules/googleAuth";
 
 const SignIn = () => {
   const [createAccount, setCreateAccount] = React.useState<boolean>(false);
@@ -31,15 +32,16 @@ const SignIn = () => {
   return (
     <div className="space-y-6 text-sm w-5/6 max-w-[470px] mx-auto">
       {/* Google button */}
-      <div className="bg-white flex justify-center items-center gap-2 h-[38px] rounded-3xl mt-14 ">
+      <div
+        className="bg-white flex justify-center items-center gap-2 h-[38px] rounded-3xl mt-14 cursor-pointer"
+        onClick={googleAuth}
+      >
         <img
           src="/SortedGames/icons/google-icon.svg"
           alt="google icon."
           className="size-6"
         />
-        <p className="text-black font-semibold cursor-pointer">
-          Continue with Gooogle
-        </p>
+        <p className="text-black font-semibold">Continue with Gooogle</p>
       </div>
 
       {/* OR divider */}

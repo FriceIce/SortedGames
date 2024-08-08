@@ -41,11 +41,6 @@ export const savedGames = async (req: Request, res: Response) => {
 
 type GameMiniCard = {
   id: string;
-  game_url: string;
-  genre: string;
-  platform: string;
-  publisher: string;
-  short_description: string;
   thumbnail: string;
   title: string;
 };

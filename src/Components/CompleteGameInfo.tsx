@@ -1,17 +1,20 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import { Game } from "../definitions";
 import { fetchGames } from "../modules/fetchGames";
 import { optionsForGamesFetching } from "../modules/fetchOptions";
-import { Game } from "../definitions";
-import { useParams } from "react-router-dom";
 import AdditionalInformation from "./AdditionalInformation";
 import SystemRequirements from "./SystemRequirements";
 import SaveGameComponent from "./SaveGameComponent";
+import CompleteGameInfoSkeletonLoader from "./CompleteGameInfoSkeletonLoader";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 const CompleteGameInfo = () => {
-  const [game, setFetchGame] = React.useState<Game>();
+  const [game, setFetchGame] = React.useState<Game | null>(null);
   const [readMore, setReadMore] = React.useState<boolean>(false);
   const [height, setHeight] = React.useState<number | undefined>(undefined);
   const { id } = useParams();
+  useScrollToTop([]);
 
   React.useEffect(() => {
     const url =
@@ -30,13 +33,15 @@ const CompleteGameInfo = () => {
       return;
     };
 
-    if (game !== undefined) calcHeight();
+    if (game !== null) calcHeight();
     return () => {};
   }, [game]);
 
   return (
     <>
-      {game && (
+      {game === null ? (
+        <CompleteGameInfoSkeletonLoader />
+      ) : (
         <>
           <img
             id="heroImage"
@@ -47,7 +52,10 @@ const CompleteGameInfo = () => {
             className="absolute z-[-1] inset-0 opacity-[20%] w-full h-[600px] object-cover object-center"
           />
 
-          <div className="md:flex md:gap-6 md:space-y-0 max-w-[550px] mx-auto 2xl:mx-auto py-4 px-5 space-y-10  md:max-w-[1538px]">
+          <div
+            className="mt-10 md:flex md:gap-6 md:space-y-0 max-w-[550px] mx-auto 2xl:mx-auto py-4 px-5 space-y-10  md:max-w-[1538px]"
+            id={game.title}
+          >
             <div className="flex-[2] max-w-[600px]">
               <div className="space-y-4 w-full">
                 <div className="w-full rounded-md shadow">
@@ -64,7 +72,7 @@ const CompleteGameInfo = () => {
                   <a
                     href={game.game_url}
                     title={`Go to ${game.title} page.`}
-                    className="bg-[#4799eb] flex justify-center gap-1 w-[70%] py-2 rounded-md cursor-pointer list-none text-white"
+                    className="bg-[#4799eb] flex justify-center gap-1 w-[77%] py-2 rounded-md cursor-pointer list-none text-white"
                   >
                     <p className="">PLAY NOW</p>
                     <img
@@ -73,15 +81,17 @@ const CompleteGameInfo = () => {
                       className="size-6"
                     />
                   </a>
-                  {/* <SaveGameComponent gameCard={}/> */}
                 </div>
               </div>
             </div>
             <div className="flex-[3] space-y-10">
               <div className="space-y-3">
-                <h1 className="text-xl md:text-2xl font-semibold">
-                  {game.title}
-                </h1>
+                <div className="flex items gap-4">
+                  <h1 className="text-xl md:text-2xl font-semibold">
+                    {game.title}
+                  </h1>
+                  <SaveGameComponent gameCard={game} />
+                </div>
                 <div
                   className={`grid ${
                     readMore ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
@@ -109,14 +119,14 @@ const CompleteGameInfo = () => {
                 </div>
                 {!readMore ? (
                   <p
-                    className="text-sm"
+                    className="text-sm cursor-pointer"
                     onClick={() => setReadMore((prev) => !prev)}
                   >
                     &#x2b; Read More
                   </p>
                 ) : (
                   <p
-                    className="text-sm"
+                    className="text-sm cursor-pointer"
                     onClick={() => setReadMore((prev) => !prev)}
                   >
                     &#x2212; Read Less

@@ -1,12 +1,12 @@
-import React, { EventHandler, FormEvent } from "react";
-import { useFetch } from "../../hooks/useFetch";
-import { gameUrl, optionsForGamesFetching } from "../../modules/fetchOptions";
+import React, { FormEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../../Components/GameCard";
 import { GameMiniCard } from "../../definitions";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useFetch } from "../../hooks/useFetch";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { gameUrl, optionsForGamesFetching } from "../../modules/fetchOptions";
+import { RootState } from "../../redux/store";
 
 const Search = () => {
   // Use a state to display content for user Search results.
@@ -58,7 +58,7 @@ const Search = () => {
   };
   return (
     <section
-      className={`space-y-6 mt-10 transition-all duration-200 ${
+      className={`space-y-6 mt-16 transition-all duration-200 ${
         desktop && sidemenu && "ml-[210px]"
       }`}
     >

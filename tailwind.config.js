@@ -4,8 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        skeletonColor: "#020617",
+        skeletonColor: "#3d3f44",
         midnightBlue: "#101720",
+        themePurple: "#7c61ec",
+      },
+
+      screens: {
+        xs: { max: "524px" },
       },
     },
   },

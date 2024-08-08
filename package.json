@@ -2,7 +2,7 @@
   "name": "sortedgames",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://{friceice}.github.io/{Sorted-Games}/",
+  "homepage": "https://Friceice.github.io/SortedGames/",
   "type": "module",
   "scripts": {
     "dev": "vite",
