@@ -2,74 +2,46 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { GameMiniCard } from "../definitions";
-import { fetchGames } from "../modules/fetchGames";
-import {
-  optionsWithBody,
-  optionsWithoutBody,
-  userUrl,
-} from "../modules/fetchOptions";
-import { useCookies } from "react-cookie";
+import { updateSavedGamesList } from "../firebase/firebase";
 
 const SaveGameComponent = ({ gameCard }: { gameCard: GameMiniCard }) => {
   const [likeBtn, setLikeBtn] = React.useState<boolean | null>(null);
-  const { latestLikedId, latestRemovedLikeId } = useSelector(
-    (state: RootState) => state.user
-  );
 
   const user = useSelector((state: RootState) => state.user.user);
   const { savedGames } = useSelector((state: RootState) => state.user);
-  const [cookies] = useCookies(["user"]);
   const dispatch = useDispatch();
 
-  // Checks if this game card i already liked.
+  //This useEffect checks if the game card i already liked.
   React.useEffect(() => {
-    if (!user) return setLikeBtn(false);
+    if (!user || !savedGames) return setLikeBtn(false);
 
-    if (
-      !likeBtn ||
-      latestLikedId === gameCard.id ||
-      latestRemovedLikeId === gameCard.id
-    ) {
+    if (!likeBtn) {
       for (let i = 0; i < savedGames.length; i++) {
         if (savedGames[i].id === gameCard.id) {
           setLikeBtn(true);
-          return;
-        }
-
-        if (savedGames[i].id === latestRemovedLikeId) {
-          setLikeBtn(false);
           return;
         }
       }
 
       setLikeBtn(false);
     }
-  }, [latestLikedId, latestRemovedLikeId, user]);
+  }, [user]);
 
   const saveOrRemoveGame = () => {
-    if (!user) return; //If user is not online then leave this function.
-
-    // The server only requrie id, thumbnail and title
-    const { id, thumbnail, title } = gameCard;
-    const { userId, token } = cookies.user;
-    const param = `${userId}-${gameCard.id}`;
+    if (!user) return alert("Please log in to save this content");
+    const gameList = savedGames ? [...savedGames] : [];
+    const { id, title, thumbnail } = gameCard;
 
     if (likeBtn === false) {
-      console.log("Saving the game card...");
-      fetchGames(
-        userUrl(`saveGameDetails`, param),
-        optionsWithBody("POST", { id, thumbnail, title }, token)
-      );
-      dispatch({ type: "user/setSaveGame", payload: gameCard });
+      gameList.push({ id, title, thumbnail });
+      dispatch({ type: "user/setUpdateSavedGamesList", payload: gameList });
+      updateSavedGamesList(user.userId, dispatch, gameList);
     }
 
     if (likeBtn === true) {
       console.log("Removing the game card...");
-      fetchGames(
-        userUrl(`removeGameDetails`, param),
-        optionsWithoutBody("DELETE", token)
-      );
-      dispatch({ type: "user/setRemoveGame", payload: gameCard });
+      const removingGame = gameList.filter((game) => gameCard.id !== game.id);
+      updateSavedGamesList(user.userId, dispatch, removingGame);
     }
     setLikeBtn((prev) => !prev);
   };

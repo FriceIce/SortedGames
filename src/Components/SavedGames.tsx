@@ -9,15 +9,16 @@ const SavedGames = () => {
       <h1 className="text-center text-2xl font-bold">Your saved Games list</h1>
       <div className="flex justify-center">
         <ul className="card-grid w-full mx-4 no-scrollbar">
-          {savedGames
-            .map((game) => {
-              return (
-                <li key={game.id} className="rounded-xl">
-                  <GameCard card={game} />
-                </li>
-              );
-            })
-            .reverse()}
+          {savedGames &&
+            savedGames
+              .map((game) => {
+                return (
+                  <li key={game.id} className="rounded-xl">
+                    <GameCard card={game} />
+                  </li>
+                );
+              })
+              .reverse()}
         </ul>
       </div>
     </>

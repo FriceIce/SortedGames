@@ -15,7 +15,7 @@ const Dashboard = () => {
     <>
       {user && (
         <div
-          className={`space-y-7 mt-8 transition-all duration-200 ${
+          className={`space-y-7 transition-all duration-200 ${
             sidemenu && "lg:ml-[277px]"
           }`}
         >

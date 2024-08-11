@@ -1,39 +1,23 @@
 import React from "react";
-import { fetchGames } from "../modules/fetchGames";
+import { useSelector } from "react-redux";
 import { AvatarWithBackground } from "../definitions";
-import { useDispatch, useSelector } from "react-redux";
+import { updateAvatar } from "../firebase/firebase";
+import { fetchGames } from "../modules/fetchGames";
 import { RootState } from "../redux/store";
-import fetchUserData from "../modules/fetchUser";
-import { optionsWithBody, userUrl } from "../modules/fetchOptions";
-import { useCookies } from "react-cookie";
 
 const Avatar = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const [data, setData] = React.useState<AvatarWithBackground>({
     withBackground: [],
   });
-  const [, /* cookie */ setCookie] = useCookies(["user"]);
-  const dispatch = useDispatch();
 
   React.useEffect(() => {
     fetchGames("/SortedGames/database/avatars/avatars.json", null, setData);
   }, []);
 
   const setProfileImg = (avatarSrc: string | null) => {
-    console.log(avatarSrc);
     if (!user || !avatarSrc) return;
-
-    const option = optionsWithBody(
-      "PUT",
-      { ...user, profileImg: avatarSrc },
-      user.token
-    );
-    fetchUserData(userUrl("profileImage"), dispatch, option);
-    setCookie("user", JSON.stringify({ ...user, profileImg: avatarSrc }), {
-      path: "/SortedGames/",
-      httpOnly: false,
-      secure: true,
-    });
+    updateAvatar(user.userId, avatarSrc);
   };
   return (
     <>
