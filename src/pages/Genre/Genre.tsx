@@ -1,15 +1,19 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import GameCard from "../../Components/GameCard";
-import GameFilter from "../../Components/GameFilter";
 import { FilterOptions, GameMiniCard } from "../../definitions";
 import { fetchGames } from "../../modules/fetchGames";
 import { optionsForGamesFetching } from "../../modules/fetchOptions";
 import { RootState } from "../../redux/store";
 import useScrollToTop from "../../hooks/useScrollToTop";
 import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
-import LoadingScreen from "../../Components/LoadingScreen/LoadingScreen";
+
+// Components
+const GameCard = lazy(() => import("../../Components/GameCard"));
+const GameFilter = lazy(() => import("../../Components/GameFilter"));
+const LoadingScreen = lazy(
+  () => import("../../Components/LoadingScreen/LoadingScreen")
+);
 
 const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   const [data, setData] = React.useState<GameMiniCard[]>([]);
@@ -69,7 +73,7 @@ const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
         )}
         {isLoading && (
           <div className="pt-10">
-            <LoadingScreen loader="smallerLoaderAnimation" />
+            <LoadingScreen loader="smallerLoaderAnimation" position="static" />
           </div>
         )}
         <ul className={`card-grid w-full`}>

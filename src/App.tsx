@@ -1,23 +1,28 @@
+import React, { lazy } from "react";
+
 //React Router
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+// components
+const Api = lazy(() => import("./pages/Api/Api"));
+const Home = lazy(() => import("./pages/Home/Home"));
+const Genre = lazy(() => import("./pages/Genre/Genre"));
+const Header = lazy(() => import("./Components/Header"));
+const SignIn = lazy(() => import("./pages/Signin/SignIn"));
+const Search = lazy(() => import("./pages/Search/Search"));
+const PrivateRoutes = lazy(() => import("./PrivateRoutes"));
+const SideMenu = lazy(() => import("./Components/SideMenu"));
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
+const CompleteGameInfo = lazy(() => import("./Components/CompleteGameInfo"));
+const LoadingScreen = lazy(
+  () => import("./Components/LoadingScreen/LoadingScreen")
+);
+
 //*
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CompleteGameInfo from "./Components/CompleteGameInfo";
-import Header from "./Components/Header";
-import LoadingScreen from "./Components/LoadingScreen/LoadingScreen";
-import SideMenu from "./Components/SideMenu";
 import { UserInformations } from "./definitions";
 import { useCheckUserState } from "./hooks/useCheckUserState";
 import { useMediaQuery } from "./hooks/useMediaQuery";
-import Api from "./pages/Api/Api";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Genre from "./pages/Genre/Genre";
-import Home from "./pages/Home/Home";
-import Search from "./pages/Search/Search";
-import SignIn from "./pages/Signin/SignIn";
-import PrivateRoutes from "./PrivateRoutes";
 import { RootState } from "./redux/store";
 
 function App() {
@@ -61,7 +66,9 @@ function App() {
       id="sub_root"
       onScroll={getScrollPosition}
     >
-      {user === null && <LoadingScreen loader="fullScreenloader" />}
+      {user === null && (
+        <LoadingScreen loader="fullScreenloader" position="fixed" />
+      )}
       <BrowserRouter>
         <div className="sticky z-[3] top-0">
           <Header scrollPosition={scrollPosition} />

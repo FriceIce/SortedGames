@@ -1,17 +1,16 @@
-import React from "react";
+import React, { lazy } from "react";
 // modules
-import { fetchGames } from "../modules/fetchGames";
 
 // components
-import GamesCardList from "./GamesCardList";
+const GamesCardList = lazy(() => import("./GamesCardList"));
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
-import { gameUrl, optionsForGamesFetching } from "../modules/fetchOptions";
-import { RootState } from "../redux/store";
-import { useMediaQuery } from "../hooks/useMediaQuery";
-import { Link } from "react-router-dom";
 import { returnGameTitles } from "../modules/gameFilterSystem";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { readGameCategories } from "../firebase/firebase";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { RootState } from "../redux/store";
 
 const Games = () => {
   const { popular, MOBA, fighting, allGames } = useSelector(
@@ -21,24 +20,15 @@ const Games = () => {
   const [pending, setIsPending] = React.useState<boolean>(true);
   const desktop = useMediaQuery("(min-width: 1000px)");
 
-  // URL for API requests to FREE GAMES API - currently fetching games fron /database/category
-  const url_popular = gameUrl(true, "popularity");
-  const url_fighter = gameUrl(true, "fighting");
-  const url_mixed_games = gameUrl(true, "allGames");
-  const url_MOBA_games = gameUrl(true, "MOBA");
-
   React.useEffect(() => {
-    // If the states has content then we need to display it instead of re-featch the same content.
+    // If the states has content then we need to display it instead of re-featching the same content.
     if (popular.length !== 0 && allGames.length !== 0)
       return setIsPending(false);
 
-    const fetch_popular = fetchGames(
-      url_popular,
-      optionsForGamesFetching /* dispatch */
-    );
-    const fetch_mixed_games = fetchGames(url_mixed_games);
-    const fetch_fighter_games = fetchGames(url_fighter);
-    const fetch_MOBA_games = fetchGames(url_MOBA_games);
+    const fetch_popular = readGameCategories("Popular");
+    const fetch_mixed_games = readGameCategories("MixedGames");
+    const fetch_fighter_games = readGameCategories("Fighting");
+    const fetch_MOBA_games = readGameCategories("MOBA");
 
     const allFetches = [
       fetch_popular,
@@ -49,6 +39,7 @@ const Games = () => {
 
     Promise.all(allFetches).then((data) => {
       // The same order as the allFetches array.
+      console.log(data);
       dispatch({ type: "games/cacheGames", payload: data });
       setIsPending(false);
       return;
