@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { RootState } from "../redux/store";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import { Link } from "react-router-dom";
 import { genres } from "../assets/genreImages";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { RootState } from "../redux/store";
 
 const GenresList = ({ genresState }: { genresState: boolean }) => {
   const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
@@ -32,7 +32,7 @@ const GenresList = ({ genresState }: { genresState: boolean }) => {
               : genre.title.replace(" ", "&");
           return (
             <li key={genre.title}>
-              <NavLink
+              <Link
                 to={`/SortedGames/genre/${param.toLowerCase()}`}
                 className="flex items-center gap-4"
                 onClick={onNavLink}
@@ -43,7 +43,7 @@ const GenresList = ({ genresState }: { genresState: boolean }) => {
                   className="size-[54px] rounded-xl object-cover object-center"
                 />
                 <p className="font-normal text-sm">{genre.title}</p>
-              </NavLink>
+              </Link>
             </li>
           );
         })}

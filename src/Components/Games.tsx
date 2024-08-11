@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { gameUrl, optionsForGamesFetching } from "../modules/fetchOptions";
 import { RootState } from "../redux/store";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { Link } from "react-router-dom";
+import { returnGameTitles } from "../modules/gameFilterSystem";
 
 const Games = () => {
   const { popular, MOBA, fighting, allGames } = useSelector(
@@ -55,35 +57,32 @@ const Games = () => {
     return () => {};
   }, []);
 
-  // const skeletonLoaders = [
-  //   <GameCardSkeletonLoader key={0} />,
-  //   <GameCardSkeletonLoader key={1} />,
-  //   <GameCardSkeletonLoader key={2} />,
-  //   <GameCardSkeletonLoader key={3} />,
-  //   <GameCardSkeletonLoader key={4} />,
-  //   <GameCardSkeletonLoader key={5} />,
-  //   <GameCardSkeletonLoader key={6} />,
-  //   <GameCardSkeletonLoader key={7} />,
-  //   <GameCardSkeletonLoader key={8} />,
-  //   <GameCardSkeletonLoader key={9} />,
-  // ];
-  const popularGameTitles = popular.map((game) => game.title);
+  // List of game titles for not dysplaying dublicated games.
+  const popularGameTitles = returnGameTitles(popular);
+  const fightingGameTitles = returnGameTitles(fighting);
+  const MOBAGameTitles = returnGameTitles(MOBA);
   return (
     <>
       {!pending && (
-        <div className="text-white mt-8 space-y-2">
+        <div className="text-white space-y-2">
           <div className="space-y-1">
             <h2 className="text-base mx-3 font-semibold">
               Popular Games{" "}
-              <span className="text-[#A48EFF] text-xs sm:text-sm cursor-pointer hover:text-themePurple">
+              <Link
+                to={`/SortedGames/genre/popular`}
+                className="text-[#A48EFF] text-xs sm:text-sm cursor-pointer hover:text-themePurple"
+              >
                 view more
-              </span>
+              </Link>
             </h2>
 
             <GamesCardList
               classNameUL="flex overflow-scroll lg:overflow-hidden pb-2 no-scrollbar"
               classNameLI={`flex-none w-[350px] rounded-xl transition-all duration-200`}
-              gamesList={popular}
+              gamesList={popular.filter((game) => {
+                if (!fightingGameTitles.includes(game.title)) return game;
+                if (!MOBAGameTitles.includes(game.title)) return game;
+              })}
               arrows={desktop}
               position={0}
             />
@@ -91,15 +90,20 @@ const Games = () => {
           <div className="space-y-1">
             <h2 className="text-base mx-3 font-semibold">
               Fighting Games{" "}
-              <span className="text-[#A48EFF] text-xs sm:text-sm cursor-pointer hover:text-themePurple">
+              <Link
+                to={`/SortedGames/genre/fighting`}
+                className="text-[#A48EFF] text-xs sm:text-sm cursor-pointer hover:text-themePurple"
+              >
                 view more
-              </span>
+              </Link>
             </h2>
 
             <GamesCardList
               classNameUL="flex overflow-scroll lg:overflow-hidden pb-2 no-scrollbar"
               classNameLI={`flex-none w-[350px] rounded-xl transition-all duration-200`}
-              gamesList={fighting}
+              gamesList={fighting.filter(
+                (game) => !popularGameTitles.includes(game.title)
+              )}
               arrows={desktop}
               position={1}
             />
@@ -107,15 +111,20 @@ const Games = () => {
           <div className="space-y-1">
             <h2 className="text-base mx-3 font-semibold">
               MOBA Games{" "}
-              <span className="text-[#A48EFF] text-xs sm:text-sm cursor-pointer hover:text-themePurple">
+              <Link
+                to={`/SortedGames/genre/MOBA`}
+                className="text-[#A48EFF] text-xs sm:text-sm cursor-pointer hover:text-themePurple"
+              >
                 view more
-              </span>
+              </Link>
             </h2>
 
             <GamesCardList
               classNameUL="flex overflow-scroll lg:overflow-hidden pb-2 no-scrollbar"
               classNameLI={`flex-none w-[350px] rounded-xl transition-all duration-200`}
-              gamesList={MOBA}
+              gamesList={MOBA.filter(
+                (game) => !fightingGameTitles.includes(game.title)
+              )}
               arrows={desktop}
               position={2}
             />
@@ -125,9 +134,11 @@ const Games = () => {
             <GamesCardList
               classNameUL="card-grid overflow-auto no-scrollbar"
               classNameLI="flex-none"
-              gamesList={allGames.filter(
-                (game) => !popularGameTitles.includes(game.title)
-              )}
+              gamesList={allGames.filter((game) => {
+                if (!popularGameTitles.includes(game.title)) return game;
+                if (!fightingGameTitles.includes(game.title)) return game;
+                if (!MOBAGameTitles.includes(game.title)) return game;
+              })}
               arrows={false}
               position={3}
             />

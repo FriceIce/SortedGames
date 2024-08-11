@@ -25,11 +25,8 @@ const GamesCardList = ({
 
   // This is for media queries and also for calulating how many dots should be added under the slide.
   const screenWidthForMultiCards = useMediaQuery("(min-width: 1000px)"); // minimum three cards.
-  // const screenWidthForCards = useMediaQuery("(min-width: 1455px)");
-  // const screenWidthFiveCards = useMediaQuery("(min-width: 1784px)");
 
   const prevSlide = () => {
-    console.log(screenWidthForMultiCards, currentIndex);
     if (currentIndex === 0) return;
     if (screenWidthForMultiCards) setCurrentIndex((currIndex) => currIndex - 2);
     setCurrentIndex((count) => count - 1);
@@ -88,35 +85,13 @@ const GamesCardList = ({
           );
         })}
       </ul>
-
-      {/* {arrows && pathname === "/SortedGames/" && (
-        <ul className="flex gap-3 w-max mt-3 mx-auto" id="games">
-          {gamesList.map((dot, gameIndex) => {
-            if (screenWidthFiveCards && gameIndex > 2) return null;
-            if (screenWidthForCards && gameIndex > 2) return null;
-            if (screenWidthForMultiCards && gameIndex > 3) return null;
-            if (!screenWidthForMultiCards) return null;
-
-            return (
-              <li
-                key={dot.title}
-                className={`size-[6px] flex-none rounded-full transition-all duration-200 ${
-                  currentDotIndex === gameIndex
-                    ? "bg-[#7C61EC] scale-125"
-                    : "bg-white scale-75"
-                }`}
-              ></li>
-            );
-          })}
-        </ul>
-      )} */}
     </ScrollArrows>
   );
 };
 
 export default GamesCardList;
 
-// breackpoints
+// break points
 // three cards --> 1100px
 // four cards --> 1469px
 // five cards --> 1832px
