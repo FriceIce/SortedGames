@@ -1,6 +1,5 @@
 import React, { FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import GameCard from "../../Components/GameCard";
 import { GameMiniCard } from "../../definitions";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useFetch } from "../../hooks/useFetch";
@@ -8,6 +7,9 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { gameUrl, optionsForGamesFetching } from "../../modules/fetchOptions";
 import { RootState } from "../../redux/store";
 import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
+
+// Components
+import GameCard from "../../Components/GameCard";
 import LoadingScreen from "../../Components/LoadingScreen/LoadingScreen";
 
 const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
@@ -94,7 +96,7 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
         )}
         {isLoading && (
           <div className="pt-10">
-            <LoadingScreen loader="smallerLoaderAnimation" />
+            <LoadingScreen loader="smallerLoaderAnimation" position="static" />
           </div>
         )}
         {

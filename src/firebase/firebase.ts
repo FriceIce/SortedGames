@@ -183,3 +183,14 @@ export const updateSavedGamesList = async (
     })
     .catch(() => console.error("Updating savedGames list failed"));
 };
+
+// <<<< [**** FETCH GAMES FROM FIREBASE DB ****] >>>> \\
+
+export const readGameCategories = async (category: string) => {
+  const gamesRef = ref(database, "games/" + category);
+  return new Promise((resolve) => {
+    onValue(gamesRef, (snapShot) => {
+      resolve(snapShot.val());
+    });
+  });
+};

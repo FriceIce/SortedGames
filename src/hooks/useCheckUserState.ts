@@ -6,7 +6,7 @@ export const useCheckUserState = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    const timeoutID = setTimeout(() => userStatus(dispatch), 1000);
+    const timeoutID = setTimeout(() => userStatus(dispatch), 0);
     return () => clearTimeout(timeoutID);
   }, []);
   return;

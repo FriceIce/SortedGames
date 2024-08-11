@@ -14,26 +14,26 @@ export const gamesSlice = createSlice({
   name: "games",
   initialState,
   reducers: {
-    cacheGames: (state, action: PayloadAction<GameMiniCard[][]>) => {
+    cacheGames: (state, action: PayloadAction<Prop>) => {
       const payload = action.payload;
 
       // Prevents the states from storing all 300+ games that comes with the fetched data.
       state.popular =
-        payload[0].length > 10
-          ? payload[0].slice(0, 11)
-          : payload[0].slice(0, payload[0].length);
+        payload[0].games.length > 10
+          ? payload[0].games.slice(0, 11)
+          : payload[0].games.slice(0, payload[0].games.length);
 
       state.MOBA =
-        payload[1].length > 10
-          ? payload[1].slice(0, 11)
-          : payload[1].slice(0, payload[1].length);
+        payload[1].games.length > 10
+          ? payload[1].games.slice(0, 11)
+          : payload[1].games.slice(0, payload[1].games.length);
 
       state.fighting =
-        payload[2].length > 10
-          ? payload[2].slice(0, 11)
-          : payload[2].slice(0, payload[2].length);
+        payload[2].games.length > 10
+          ? payload[2].games.slice(0, 11)
+          : payload[2].games.slice(0, payload[2].games.length);
 
-      state.allGames = payload[3].slice(0, 100);
+      state.allGames = payload[3].games.slice(0, 100);
     },
 
     cacheSearchResults: (state, action: PayloadAction<GameMiniCard[]>) => {
@@ -43,3 +43,5 @@ export const gamesSlice = createSlice({
 });
 
 export default gamesSlice.reducer;
+
+type Prop = { games: GameMiniCard[] }[];
