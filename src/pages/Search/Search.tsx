@@ -7,8 +7,9 @@ import { useFetch } from "../../hooks/useFetch";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { gameUrl, optionsForGamesFetching } from "../../modules/fetchOptions";
 import { RootState } from "../../redux/store";
+import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
 
-const Search = () => {
+const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   // Use a state to display content for user Search results.
   const [input, setInput] = React.useState<string>("");
   const games = useSelector((state: RootState) => state.games.searchGames);
@@ -16,6 +17,7 @@ const Search = () => {
   const dispatch = useDispatch();
 
   const debounce = useDebounce(input.trim(), 500); //500ms delay before fetching games
+  const amountOfGames = useFetchGamesOnScroll(scrollPositionY); //scroll position 1 --> 50 more games will be displayed.
   const desktop = useMediaQuery("(min-width: 1024px)"); // Tailwind lg screen size
 
   const { data } = useFetch(
@@ -40,17 +42,17 @@ const Search = () => {
     )
       return data;
     if (
-      data.genre.toLocaleLowerCase().includes(inputValue) &&
+      data.genre?.toLocaleLowerCase().includes(inputValue) &&
       !allCardMatches.includes(data)
     )
       return data;
     if (
-      data.platform.toLocaleLowerCase().includes(inputValue) &&
+      data.platform?.toLocaleLowerCase().includes(inputValue) &&
       !allCardMatches.includes(data)
     )
       return data;
     if (
-      data.publisher.toLocaleLowerCase().includes(inputValue) &&
+      data.publisher?.toLocaleLowerCase().includes(inputValue) &&
       !allCardMatches.includes(data)
     )
       return data;
@@ -58,7 +60,7 @@ const Search = () => {
   };
   return (
     <section
-      className={`space-y-6 mt-16 transition-all duration-200 ${
+      className={`space-y-6 transition-all duration-200 ${
         desktop && sidemenu && "ml-[210px]"
       }`}
     >
@@ -93,6 +95,7 @@ const Search = () => {
             {gamesList.map((data: GameMiniCard, index) => {
               // Filter out games that does not include input values.
               if (searchValues(debounce, data) === null) return null;
+              if (index > amountOfGames && input === "") return null;
               return (
                 <li key={index} className="">
                   <GameCard card={data} />

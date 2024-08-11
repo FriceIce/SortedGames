@@ -8,20 +8,24 @@ import { fetchGames } from "../../modules/fetchGames";
 import { optionsForGamesFetching } from "../../modules/fetchOptions";
 import { RootState } from "../../redux/store";
 import useScrollToTop from "../../hooks/useScrollToTop";
+import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
 
-const Genre = () => {
+const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   const [data, setData] = React.useState<GameMiniCard[]>([]);
   const [filterOption, setFilterOption] = React.useState<FilterOptions>("all");
   const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
 
+  const fetchOnScroll = useFetchGamesOnScroll(scrollPositionY);
+
   // Get the param and put the value in the url
   const { genreTitle } = useParams();
+  const query =
+    genreTitle?.toLocaleLowerCase() === "popular" ? "sort-by" : "category";
 
   // url
-  const allUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genreTitle}`;
-  const alpahabeticalUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genreTitle}&sort-by=${filterOption}`;
+  const allUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?${query}=${genreTitle}`;
+  const alpahabeticalUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?${query}=${genreTitle}&sort-by=${filterOption}`;
 
-  console.log(genreTitle);
   useScrollToTop([genreTitle]);
 
   React.useEffect(() => {
@@ -63,8 +67,11 @@ const Genre = () => {
           </h1>
         )}
         <ul className={`card-grid w-full`}>
-          {data.map((data) => {
-            const platform = data.platform.toLowerCase().includes(filterOption);
+          {data.map((data, index) => {
+            const platform = data.platform
+              ?.toLowerCase()
+              .includes(filterOption);
+            if (index > fetchOnScroll) return null;
             if (filterOption === "all" || filterOption === "alphabetical")
               return gameCard(data);
             if (filterOption === "pc" && platform) return gameCard(data);
