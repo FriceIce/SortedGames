@@ -5,19 +5,22 @@ import Inputfield from "../../Components/Inputfield";
 // React hook form
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import type { FormValues } from "../../definitions";
-import { googleAuth } from "../../modules/googleAuth";
 
 //firebase
-import { auth, createUser, readUserData } from "../../firebase/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import {
+  auth,
+  createUser,
+  signInWithGoogle,
+  userStatus,
+} from "../../firebase/firebase";
 
 const SignIn = () => {
   const [createAccount, setCreateAccount] = React.useState<boolean>(false);
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
 
   // React hook form
   const methods = useForm<FormValues>();
@@ -39,11 +42,7 @@ const SignIn = () => {
       );
     if (!createAccount)
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-          const user = userCredentials.user;
-          readUserData(user.uid);
-          // console.log(userCredentials.user);
-        })
+        .then(() => userStatus(dispatch))
         .catch((error) => {
           console.log(error);
         });
@@ -55,14 +54,14 @@ const SignIn = () => {
       {/* Google button */}
       <div
         className="bg-white flex justify-center items-center gap-2 h-[38px] rounded-3xl mt-14 cursor-pointer"
-        onClick={googleAuth}
+        onClick={() => signInWithGoogle(dispatch)}
       >
         <img
           src="/SortedGames/icons/google-icon.svg"
           alt="google icon."
           className="size-6"
         />
-        <p className="text-black font-semibold">Continue with Gooogle</p>
+        <p className="text-black font-semibold">Continue with Google</p>
       </div>
 
       {/* OR divider */}

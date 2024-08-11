@@ -1,18 +1,12 @@
 // TypeScript definitions
 
 export type GameMiniCard = {
-  // developer?: string;
-  // freetogame_profile_url: string;
-  game_url: string;
-  genre: string;
   id: number;
-  gameId?: string;
-  platform: string;
-  publisher: string;
-  // release_date?: string;
-  short_description: string;
   thumbnail: string;
   title: string;
+  publisher?: string;
+  platform?: string;
+  genre?: string;
 };
 
 export type GamesList = {
@@ -64,6 +58,7 @@ export type FormValues = {
 };
 
 export type UserInformations = {
+  userId: string;
   email: string;
   username: string;
   profileImg: string;
@@ -91,3 +86,12 @@ export type UserResponse = {
 
 // filter options
 export type FilterOptions = "alphabetical" | "pc" | "browser" | "all";
+
+// Firebase user snapshot.
+export type UserSnapshot = {
+  userId: string;
+  email: string;
+  username: string;
+  profileImg: string;
+  SavedGames: GameMiniCard[];
+};

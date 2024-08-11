@@ -28,7 +28,7 @@ export const useFetch = (
           });
 
         const json = await response.json();
-        console.log(json);
+        // console.log(json);
         setData(json);
 
         if (dispatch && reduxType) dispatch({ type: reduxType, payload: json });

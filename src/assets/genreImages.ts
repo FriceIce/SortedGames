@@ -1,5 +1,6 @@
 export const corePath = "/SortedGames/images/thumbnails/thumbnail-";
 export const genres = [
+  { src: `${corePath}valorant.jpg`, title: "Popular" },
   { src: `${corePath}open_world.jpg`, title: "Open world" },
   { src: `${corePath}battle-royale.jpg`, title: "Battle Royale" },
   { src: `${corePath}MMORPG.jpg`, title: "MMORPG" },

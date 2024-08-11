@@ -35,7 +35,7 @@ const Header = ({ scrollPosition }: { scrollPosition: boolean | null }) => {
 
   return (
     <header
-      className={`relative transition-all ${
+      className={`relative transition-all mb-16 ${
         (scrollPosition || route()) && "bg-midnightBlue"
       } ${
         sidemenu && !desktop && "bg-midnightBlue delay-200"

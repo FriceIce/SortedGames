@@ -1,11 +1,19 @@
 import { initializeApp } from "firebase/app";
 
 // Authentication
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+} from "firebase/auth";
 
 // Database
-import { getDatabase, onValue, ref, remove, set } from "firebase/database";
-import { UserInformations } from "../definitions";
+import { getDatabase, onValue, ref, set, update } from "firebase/database";
+
+// *
+import { GameMiniCard, UserSnapshot } from "../definitions";
+import { AppDispatch } from "../redux/store";
 
 // Web app Firebase configuration
 const firebaseConfig = {
@@ -22,11 +30,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// auth
+// auth, google & DB
 export const auth = getAuth(app);
-
-// DB
 const database = getDatabase();
+const provider = new GoogleAuthProvider();
 
 // Write
 export const createUser = async (
@@ -36,9 +43,11 @@ export const createUser = async (
   profileImg: string
 ) => {
   return set(ref(database, `users/${userId}`), {
+    userId,
     username: username,
     email: email,
     profileImg: profileImg,
+    savedGames: [] as GameMiniCard[],
   })
     .then(() => {
       console.log("User created successfully");
@@ -46,36 +55,131 @@ export const createUser = async (
     .catch(() => console.log("Failed to create user"));
 };
 
-// Read
-export const readUserData = async (userId: string) => {
+// Read - get user data
+export const readUserData = async (userId: string, dispatch: AppDispatch) => {
   const userRef = ref(database, "users/" + userId);
-  return onValue(
-    userRef,
-    (snapshot) => {
-      console.log(snapshot.val());
-    },
-    { onlyOnce: true }
-  );
+  return new Promise((resolve) => {
+    onValue(userRef, (snapshot) => {
+      const data = snapshot;
+      if (data.exists()) {
+        const { SavedGames, email, profileImg, username, userId } =
+          data.val() as UserSnapshot;
+        dispatch({
+          type: "user/setUserState",
+          payload: { userId, email, profileImg, username },
+        });
+        dispatch({
+          type: "user/setSavedGames",
+          payload: SavedGames,
+        });
+        resolve(data.val());
+      }
+      if (!data.exists()) {
+        console.log("No data available!");
+        resolve(data.exists());
+      }
+    });
+  });
 };
 
-// Delete - game
-export const deleteSavedGame = async (userId: string, gameId: number) => {
-  return remove(ref(database, "SavedGames/" + userId + "/" + gameId))
-    .then(() => console.log("Game deleted successfully"))
-    .catch((error) =>
-      console.log("Something went wrong deleting the game... Info: " + error)
-    );
+// Google sign in
+export const signInWithGoogle = (dispatch: AppDispatch) => {
+  // This will display "Authenticating with Google" text under the spinner.
+  dispatch({ type: "user/setGoogleAuthText", payload: true });
+  dispatch({ type: "user/setUserState", payload: null }); // This will trigger a loading screen when the user is in the proccess of sigining in with google.
+  signInWithPopup(auth, provider)
+    .then(() => {
+      dispatch({ type: "user/setGoogleAuthText", payload: false });
+      console.log("Google sign in success.");
+    })
+    .catch(() => {
+      alert("Google authentication failed. Refresh the page and try again.");
+      dispatch({ type: "user/setUserState", payload: false });
+    });
+  return;
 };
 
-//PUT - profile image
-export const updateProfileImage = async (
-  userId: string,
-  imageUrl: string,
-  user: UserInformations
-) => {
-  return set(ref(database, "users/" + userId), {
-    email: user.email,
-    username: user.username,
+// Check for user status changes
+export const userStatus = (dispatch: AppDispatch) => {
+  return onAuthStateChanged(auth, (user) => {
+    // User is signed in.
+    if (user) {
+      const response = readUserData(
+        user.uid,
+        dispatch
+      ) as Promise<UserSnapshot>;
+
+      // A promise that checks if the user has any data stored in the database. No data = new member. Has data = currently a member.
+      response.then((data) => {
+        if (!data) {
+          const profileImg =
+            "/SortedGames/images/avatars/withBackground/avocado-rambler.svg";
+          const { email, displayName: username } = user;
+
+          createUser(
+            user.uid,
+            email as string,
+            username as string,
+            profileImg
+          ).then(() => {
+            dispatch({
+              type: "user/setUserState",
+              payload: { userId: user.uid, email, profileImg, username },
+            });
+            dispatch({ type: "user/setSavedGames", payload: [] });
+          });
+        }
+        if (data) {
+          const { userId, email, profileImg, SavedGames, username } = data;
+          readUserData(userId, dispatch).then(() => {
+            dispatch({
+              type: "user/setUserState",
+              payload: { userId: user.uid, email, profileImg, username },
+            });
+            dispatch({ type: "user/setSavedGames", payload: SavedGames });
+          });
+        }
+      });
+    }
+
+    // User is signed out
+    if (!user) dispatch({ type: "user/setUserState", payload: false });
+  });
+};
+
+//sign out user
+export const signOut = async () => {
+  return await auth
+    .signOut()
+    .then(() => {
+      console.log("User signed out successfully");
+      return true; //success
+    })
+    .catch(() => {
+      console.log("User not signed out successfully");
+      return false; //failure
+    });
+};
+
+//PUT - update profile image
+export const updateAvatar = async (userId: string, imageUrl: string) => {
+  return update(ref(database, "users/" + userId), {
     profileImg: imageUrl,
   });
+};
+
+// PUT - update Saved games list.
+export const updateSavedGamesList = async (
+  userId: string,
+  dispatch: AppDispatch,
+  newList: GameMiniCard[]
+) => {
+  return await update(ref(database, "users/" + userId), {
+    SavedGames: newList,
+  })
+    .then(() => {
+      dispatch({ type: "user/setUpdateSavedGamesList", payload: newList });
+      // console.log("Updating savedGames list with success");
+    })
+    .catch(() => console.error("Updating savedGames list failed"));
 };

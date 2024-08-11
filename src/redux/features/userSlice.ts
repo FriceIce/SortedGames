@@ -3,16 +3,14 @@ import { GameMiniCard, UserInformations } from "../../definitions";
 
 type InitialState = {
   user: UserInformations | false | null;
-  latestLikedId: number | null;
-  latestRemovedLikeId: number | null;
   savedGames: GameMiniCard[];
+  googleAuth: boolean;
 };
 
 const initialState: InitialState = {
-  user: null, // Initial state is null, this means the user is not logged in.  If the user is logged in, it will be the user's form values.
-  latestLikedId: null,
-  latestRemovedLikeId: null,
+  user: null, // Initial state is null, this means the user recently refreshed the app. If the user is logged in, output user information (truthy value) and if the user is not signed in it will output false.
   savedGames: [],
+  googleAuth: false, // Initial state is false, this means the user is not authenticated with google.
 };
 
 const userSlice = createSlice({
@@ -34,15 +32,11 @@ const userSlice = createSlice({
     setSavedGames: (state, action: PayloadAction<GameMiniCard[]>) => {
       state.savedGames = action.payload;
     },
-    setSaveGame: (state, action: PayloadAction<GameMiniCard>) => {
-      state.latestLikedId = action.payload.id; // This will be used in SaveGameComponent to update all the cards with the same id and re-run the for loop for -> savedGames list so every card with the same id gets a read heart.
-      state.savedGames.push(action.payload);
+    setUpdateSavedGamesList: (state, action: PayloadAction<GameMiniCard[]>) => {
+      state.savedGames = action.payload;
     },
-    setRemoveGame: (state, action: PayloadAction<GameMiniCard>) => {
-      const id = action.payload.id;
-      const newList = state.savedGames.filter((game) => game.id !== id);
-      state.savedGames = newList;
-      state.latestRemovedLikeId = id;
+    setGoogleAuthText: (state, action: PayloadAction<boolean>) => {
+      state.googleAuth = action.payload;
     },
   },
 });

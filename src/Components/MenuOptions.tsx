@@ -2,6 +2,7 @@ import React, { Dispatch } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { UserInformations } from "../definitions";
 import { AppDispatch } from "../redux/store";
+import { signOut } from "../firebase/firebase";
 
 const MenuOptions = ({
   desktop,
@@ -15,7 +16,7 @@ const MenuOptions = ({
   desktop: boolean; // true if desktop screen min-width 1024px
   profileList: boolean;
   user: null | false | UserInformations; // Checkfor user status
-  scrollPosition: boolean | null; //Check if the user is scrolling.
+  scrollPosition?: boolean | null; //Check if the user is scrolling.
   dispatch: AppDispatch;
   navigate: NavigateFunction;
   setOpenProfileList: Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +34,7 @@ const MenuOptions = ({
       className={`flex-1  ${
         desktop
           ? `flex flex-row-reverse items-center justify-center gap-4`
-          : "space-y-6 pt-4"
+          : "space-y-6"
       } text-white`}
     >
       <div className={`flex flex-col cursor-pointer`}>
@@ -79,7 +80,7 @@ const MenuOptions = ({
           <ul
             className={`${
               scrollPosition && profileList && "bg-midnightBlue pb-2 rounded-lg"
-            } min-h-0 overflow-hidden text-xs sm:text-sm space-y-2 ml-4 w-[120px] list-disc list-inside transition-all`}
+            } min-h-0 overflow-hidden text-xs sm:text-sm space-y-4 ml-4 w-[120px] list-disc list-inside transition-all`}
             onClick={() => {
               setOpenProfileList((prev) => !prev);
               wait("/SortedGames/dashboard", desktop);
@@ -88,9 +89,11 @@ const MenuOptions = ({
             <li className="mt-2 ml-2">Dashboard</li>
             <li
               className="ml-2"
-              onClick={() =>
-                dispatch({ type: "user/setUserState", payload: false })
-              }
+              onClick={async () => {
+                const signedOut = await signOut();
+                if (signedOut)
+                  dispatch({ type: "user/setUserState", payload: false });
+              }}
             >
               Sign out
             </li>

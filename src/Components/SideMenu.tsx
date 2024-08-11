@@ -43,7 +43,9 @@ const SideMenu = () => {
 
   return (
     <aside
-      className={`fixed inset-0 z-[1] h-full bg-[#101720f6] text-white rounded-tr-md pt-[90px] ${
+      className={`fixed inset-0 z-[1] h-full bg-[#101720f6] text-white rounded-tr-md ${
+        desktop ? "pt-[120px]" : "pt-[90px]"
+      } ${
         desktop ? "w-max" : "w-full"
       } left-[-100%] transition-all duration-200 overflow-y-auto pb-2 hide-scrollbar ${
         sidemenu && "left-[0]"
