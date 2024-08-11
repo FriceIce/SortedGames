@@ -22,7 +22,7 @@ const Inputfield = ({ label, type, createAccount, required }: Inputfield) => {
       {errors[label] && errors[label]!.type === "required" && (
         <p className="text-red-400 text-xs">
           <span className="capitalize mr-1 leading-[1.4]">{label}</span>
-          är obligatoriskt.
+          is mandatory.
         </p>
       )}
 

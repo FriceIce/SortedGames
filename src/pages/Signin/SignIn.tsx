@@ -97,7 +97,7 @@ const SignIn = () => {
                 createAccount={createAccount ? true : false}
               />
               <p
-                className="text-[#7c61ec]"
+                className="text-[#7c61ec] w-max cursor-pointer"
                 onClick={() => {
                   if (createAccount) return setCreateAccount(false);
                 }}
@@ -115,7 +115,7 @@ const SignIn = () => {
               Sign in
             </button>
             <p
-              className={`text-center mt-4 cursor-pointer ${
+              className={`text-center mt-4 cursor-pointer w-max mx-auto ${
                 createAccount && "opacity-0"
               }`}
               onClick={() => setCreateAccount(true)}
