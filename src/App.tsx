@@ -61,7 +61,7 @@ function App() {
       id="sub_root"
       onScroll={getScrollPosition}
     >
-      {user === null && <LoadingScreen />}
+      {user === null && <LoadingScreen loader="fullScreenloader" />}
       <BrowserRouter>
         <div className="sticky z-[3] top-0">
           <Header scrollPosition={scrollPosition} />

@@ -21,7 +21,7 @@ const GameCard = ({
   return (
     <>
       <div
-        className={`h-full w-full rounded-xl border-2 border-transparent transition-all cursor-pointer hover:border-[#7C61EC]`}
+        className={`h-full w-full rounded-xl border-2 border-transparent transition-all cursor-pointer hover:lg:border-[#7C61EC]`}
         onClick={(e) => {
           const target = e.target as HTMLElement;
           if (!target.classList.contains("saveGame")) {

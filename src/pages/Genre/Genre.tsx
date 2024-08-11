@@ -9,9 +9,11 @@ import { optionsForGamesFetching } from "../../modules/fetchOptions";
 import { RootState } from "../../redux/store";
 import useScrollToTop from "../../hooks/useScrollToTop";
 import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
+import LoadingScreen from "../../Components/LoadingScreen/LoadingScreen";
 
 const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   const [data, setData] = React.useState<GameMiniCard[]>([]);
+  const [isLoading, setIsloading] = React.useState<boolean>(true);
   const [filterOption, setFilterOption] = React.useState<FilterOptions>("all");
   const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
 
@@ -54,7 +56,6 @@ const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
 
   return (
     <div className={`space-y-10 transition-all ${sidemenu && "lg:ml-[210px]"}`}>
-      {/* <GameFilter /> */}
       <GameFilter
         filterOption={filterOption}
         setFilterOption={setFilterOption}
@@ -66,16 +67,23 @@ const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
             {genreTitle?.replace(/[-&]/, " ")}: {filterOption}
           </h1>
         )}
+        {isLoading && (
+          <div className="pt-10">
+            <LoadingScreen loader="smallerLoaderAnimation" />
+          </div>
+        )}
         <ul className={`card-grid w-full`}>
-          {data.map((data, index) => {
-            const platform = data.platform
+          {data.map((game, index) => {
+            const platform = game.platform
               ?.toLowerCase()
               .includes(filterOption);
+
+            if (index === data.length - 1 && isLoading) setIsloading(false);
             if (index > fetchOnScroll) return null;
             if (filterOption === "all" || filterOption === "alphabetical")
-              return gameCard(data);
-            if (filterOption === "pc" && platform) return gameCard(data);
-            if (filterOption === "browser" && platform) return gameCard(data);
+              return gameCard(game);
+            if (filterOption === "pc" && platform) return gameCard(game);
+            if (filterOption === "browser" && platform) return gameCard(game);
           })}
         </ul>
       </div>

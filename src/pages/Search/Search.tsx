@@ -8,10 +8,12 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { gameUrl, optionsForGamesFetching } from "../../modules/fetchOptions";
 import { RootState } from "../../redux/store";
 import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
+import LoadingScreen from "../../Components/LoadingScreen/LoadingScreen";
 
 const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   // Use a state to display content for user Search results.
   const [input, setInput] = React.useState<string>("");
+  const [isLoading, setIsloading] = React.useState<boolean>(true);
   const games = useSelector((state: RootState) => state.games.searchGames);
   const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
     games.length > 0 ? true : false
   );
 
-  const gamesList = games.length > 0 ? games : data;
+  const gamesList = games.length > 0 ? games : (data as GameMiniCard[]);
   const onSearch = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
 
   const searchValues = (submittedValue: string, data: GameMiniCard) => {
@@ -90,10 +92,17 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
             Your search: {debounce}
           </h1>
         )}
-        {data && (
+        {isLoading && (
+          <div className="pt-10">
+            <LoadingScreen loader="smallerLoaderAnimation" />
+          </div>
+        )}
+        {
           <ul className="card-grid px-4">
             {gamesList.map((data: GameMiniCard, index) => {
               // Filter out games that does not include input values.
+              if (index === gamesList.length - 1 && isLoading)
+                setIsloading(false);
               if (searchValues(debounce, data) === null) return null;
               if (index > amountOfGames && input === "") return null;
               return (
@@ -103,7 +112,7 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
               );
             })}
           </ul>
-        )}
+        }
       </div>
     </section>
   );
