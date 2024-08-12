@@ -1,1 +1,0 @@
-const n=async(o,r,e)=>{try{const t=await fetch(o,r&&r);if(!t.ok)return console.log(t.status,t.statusText);const s=await t.json();return e&&e(s),s}catch(t){return console.error(t),null}};export{n as f};

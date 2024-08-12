@@ -1,1 +1,0 @@
-const t={method:"GET",headers:{"x-rapidapi-key":"b5a58476ecmsh38285bb3ea9a59ap1abd46jsnd3023153f3c6","x-rapidapi-host":"free-to-play-games-database.p.rapidapi.com"}},o=(e,a,s,p)=>e?`/SortedGames/database/category/${a}.json`:`https://free-to-play-games-database.p.rapidapi.com/api/${a}?${s}=${p}`;export{o as g,t as o};
