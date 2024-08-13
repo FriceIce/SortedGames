@@ -186,11 +186,17 @@ export const updateSavedGamesList = async (
 
 // <<<< [**** FETCH GAMES FROM FIREBASE DB ****] >>>> \\
 
-export const readGameCategories = async (category: string) => {
+export const readGameCategories = async (category: string, limit?: number) => {
   const gamesRef = ref(database, "games/" + category);
   return new Promise((resolve) => {
     onValue(gamesRef, (snapShot) => {
-      resolve(snapShot.val());
+      const data = snapShot.val() as { games: GameMiniCard[] };
+      resolve(
+        data.games.filter((game, index) => {
+          if (limit === undefined) return game; // If no limit is set, return all games
+          if (index <= limit) return game;
+        })
+      );
     });
   });
 };
