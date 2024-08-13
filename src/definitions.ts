@@ -11,10 +11,11 @@ export type GameMiniCard = {
 
 export type GamesList = {
   popular: GameMiniCard[];
-  allGames: GameMiniCard[];
+  mixedGames: GameMiniCard[];
   fighting: GameMiniCard[];
   MOBA: GameMiniCard[];
   searchGames: GameMiniCard[];
+  contentIsLoaded: boolean;
 };
 
 // Specific game card

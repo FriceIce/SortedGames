@@ -17,11 +17,12 @@ import {
   signInWithGoogle,
   userStatus,
 } from "../../firebase/firebase";
+import useContentIsLoaded from "../../hooks/useContentIsLoaded";
 
 const SignIn = () => {
   const [createAccount, setCreateAccount] = React.useState<boolean>(false);
   const dispatch = useDispatch();
-
+  useContentIsLoaded();
   // React hook form
   const methods = useForm<FormValues>();
 
@@ -33,18 +34,20 @@ const SignIn = () => {
       "/SortedGames/images/avatars/withBackground/avocado-rambler.svg";
 
     if (createAccount && username)
-      createUserWithEmailAndPassword(auth, email, password).then(
-        (userCredentials) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
           const user = userCredentials.user;
           createUser(user.uid, email, username, profileImgPath);
           // console.log(userCredentials.user);
-        }
-      );
+        })
+        .catch(() => {
+          alert("Email already exists, try a different one.");
+        });
     if (!createAccount)
       signInWithEmailAndPassword(auth, email, password)
         .then(() => userStatus(dispatch))
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          alert("Invalid credentials, try again.");
         });
     // navigate("/dashboard");
   };
