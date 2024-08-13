@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import useContentIsLoaded from "../../hooks/useContentIsLoaded";
 
 const Api = () => {
   const sidemenu = useSelector((state: RootState) => state.sidemenu).sidemenu;
+  useContentIsLoaded();
   return (
     <div
       className={`text-sm lg:text-base p-12 transition-all duration-200 ${
