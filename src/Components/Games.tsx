@@ -5,14 +5,13 @@ import React, { lazy } from "react";
 const GamesCardList = lazy(() => import("./GamesCardList"));
 
 // Redux
-import { returnGameTitles } from "../modules/gameFilterSystem";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { readGameCategories } from "../firebase/firebase";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { returnGameTitles } from "../modules/gameFilterSystem";
 import { RootState } from "../redux/store";
 import LoadingScreen from "./LoadingScreen/LoadingScreen";
-import useContentIsLoaded from "../hooks/useContentIsLoaded";
 
 const Games = () => {
   const { popular, MOBA, fighting, mixedGames } = useSelector(
@@ -21,7 +20,11 @@ const Games = () => {
   const dispatch = useDispatch();
   const [pending, setIsPending] = React.useState<boolean>(true);
   const desktop = useMediaQuery("(min-width: 1000px)");
-  useContentIsLoaded();
+
+  React.useEffect(() => {
+    // If the fetch is not pending, set the contentIsLoaded state to true for removal of the loading indicator.
+    if (!pending) dispatch({ type: "games/setContentIsLoaded", payload: true });
+  }, [pending]);
 
   React.useEffect(() => {
     // If the states has content then we need to display it instead of re-featching the same content.
@@ -41,17 +44,17 @@ const Games = () => {
     ];
 
     Promise.all(allFetches).then((data) => {
-      // The same order as the allFetches array.
+      // Data har the lists in the same order as the allFetches array.
       console.log(data);
-      dispatch({ type: "games/cacheGames", payload: data });
       setIsPending(false);
+      dispatch({ type: "games/cacheGames", payload: data });
       return;
     });
 
     return () => {};
   }, []);
 
-  // List of game titles for not dysplaying dublicated games.
+  // List of game titles.
   const popularGameTitles = returnGameTitles(popular);
   const fightingGameTitles = returnGameTitles(fighting);
   const MOBAGameTitles = returnGameTitles(MOBA);

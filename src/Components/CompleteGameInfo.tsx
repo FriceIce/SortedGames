@@ -21,7 +21,7 @@ const CompleteGameInfo = () => {
   useScrollToTop([]);
   useContentIsLoaded();
 
-  const { isLoading, data, isFetching } = useQuery<Game>({
+  const { isLoading, data } = useQuery<Game>({
     queryKey: [id],
     queryFn: () =>
       fetchGames(
@@ -46,7 +46,7 @@ const CompleteGameInfo = () => {
 
   return (
     <>
-      {(isLoading || isFetching) && <CompleteGameInfoSkeletonLoader />}
+      {isLoading && <CompleteGameInfoSkeletonLoader />}
 
       {!isLoading && data && (
         <>

@@ -89,7 +89,10 @@ export const signInWithGoogle = (dispatch: AppDispatch) => {
   dispatch({ type: "user/setUserState", payload: null }); // This will trigger a loading screen when the user is in the proccess of sigining in with google.
   signInWithPopup(auth, provider)
     .then(() => {
-      dispatch({ type: "user/setGoogleAuthText", payload: false });
+      setTimeout(
+        () => dispatch({ type: "user/setGoogleAuthText", payload: false }),
+        1000
+      );
       console.log("Google sign in success.");
     })
     .catch(() => {
