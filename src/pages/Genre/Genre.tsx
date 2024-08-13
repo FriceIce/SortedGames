@@ -1,5 +1,5 @@
-import React, { lazy } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { FilterOptions, GameMiniCard } from "../../definitions";
 import { fetchGames } from "../../modules/fetchGames";
@@ -9,17 +9,16 @@ import useScrollToTop from "../../hooks/useScrollToTop";
 import useFetchGamesOnScroll from "../../hooks/useFetchGamesOnScroll";
 
 // Components
-const GameCard = lazy(() => import("../../Components/GameCard"));
-const GameFilter = lazy(() => import("../../Components/GameFilter"));
-const LoadingScreen = lazy(
-  () => import("../../Components/LoadingScreen/LoadingScreen")
-);
+import GameCard from "../../Components/GameCard";
+import GameFilter from "../../Components/GameFilter";
+import LoadingScreen from "../../Components/LoadingScreen/LoadingScreen";
 
 const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   const [data, setData] = React.useState<GameMiniCard[]>([]);
   const [isLoading, setIsloading] = React.useState<boolean>(true);
   const [filterOption, setFilterOption] = React.useState<FilterOptions>("all");
   const sidemenu = useSelector((state: RootState) => state.sidemenu.sidemenu);
+  const dispatch = useDispatch();
 
   const fetchOnScroll = useFetchGamesOnScroll(scrollPositionY);
 
@@ -82,7 +81,10 @@ const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
               ?.toLowerCase()
               .includes(filterOption);
 
-            if (index === data.length - 1 && isLoading) setIsloading(false);
+            if (index === data.length - 1 && isLoading) {
+              setIsloading(false);
+              dispatch({ type: "games/setContentIsLoaded", payload: true });
+            }
             if (index > fetchOnScroll) return null;
             if (filterOption === "all" || filterOption === "alphabetical")
               return gameCard(game);

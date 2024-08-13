@@ -7,20 +7,12 @@ import { RootState } from "../redux/store";
 
 const Avatar = () => {
   const { user } = useSelector((state: RootState) => state.user);
-  // const [data, setData] = React.useState<AvatarWithBackground>({
-  //   withBackground: [],
-  // });
 
   const { data, isLoading } = useQuery<AvatarWithBackground>({
     queryKey: ["Avatars"],
     queryFn: () =>
       fetchGames("/SortedGames/database/avatars/avatars.json", null),
   });
-
-  // ANVÄND REACT QUERY
-  // React.useEffect(() => {
-  //   fetchGames("/SortedGames/database/avatars/avatars.json", null, setData);
-  // }, []);
 
   const setProfileImg = (avatarSrc: string | null) => {
     if (!user || !avatarSrc) return;

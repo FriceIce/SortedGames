@@ -1,22 +1,20 @@
-import React, { lazy } from "react";
+import React from "react";
 
 //React Router
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 // components
-const Api = lazy(() => import("./pages/Api/Api"));
-const Home = lazy(() => import("./pages/Home/Home"));
-const Genre = lazy(() => import("./pages/Genre/Genre"));
-const Header = lazy(() => import("./Components/Header"));
-const SignIn = lazy(() => import("./pages/Signin/SignIn"));
-const Search = lazy(() => import("./pages/Search/Search"));
-const PrivateRoutes = lazy(() => import("./PrivateRoutes"));
-const SideMenu = lazy(() => import("./Components/SideMenu"));
-const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
-const CompleteGameInfo = lazy(() => import("./Components/CompleteGameInfo"));
-const LoadingScreen = lazy(
-  () => import("./Components/LoadingScreen/LoadingScreen")
-);
+import CompleteGameInfo from "./Components/CompleteGameInfo";
+import Header from "./Components/Header";
+import LoadingScreen from "./Components/LoadingScreen/LoadingScreen";
+import SideMenu from "./Components/SideMenu";
+import Api from "./pages/Api/Api";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Genre from "./pages/Genre/Genre";
+import Home from "./pages/Home/Home";
+import Search from "./pages/Search/Search";
+import SignIn from "./pages/Signin/SignIn";
+import PrivateRoutes from "./PrivateRoutes";
 
 //*
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +29,9 @@ function App() {
   );
   const [scrollY, setScrollY] = React.useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user.user);
+  const contentIsLoaded = useSelector(
+    (state: RootState) => state.games.contentIsLoaded
+  );
   const dispatch = useDispatch();
   useCheckUserState();
   useMediaQuery(
@@ -61,44 +62,49 @@ function App() {
     if (userState) return <Navigate to={"/SortedGames/dashboard"} />;
   };
   return (
-    <div
-      className={`relative z-[2] overflow-y-auto overflow-x-hidden h-screen w-screen hide-scrollbar`}
-      id="sub_root"
-      onScroll={getScrollPosition}
-    >
-      {user === null && (
-        <LoadingScreen loader="fullScreenloader" position="fixed" />
-      )}
-      <BrowserRouter>
-        <div className="sticky z-[3] top-0">
-          <Header scrollPosition={scrollPosition} />
-          <SideMenu />
-        </div>
-        <Routes>
-          <Route path="/SortedGames/" element={<Home />} />
-          <Route
-            path="/SortedGames/genre/:genreTitle/"
-            element={<Genre scrollPositionY={scrollY} />}
+    <>
+      {/* <ReactQueryDevtools initialIsOpen={false} position="right" /> */}
+      <div
+        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-screen w-screen hide-scrollbar`}
+        id="sub_root"
+        onScroll={getScrollPosition}
+      >
+        {(user === null || !contentIsLoaded) && (
+          <LoadingScreen
+            loader="fullScreenloader"
+            position="fixed"
+            text={true}
           />
-          <Route
-            path="/SortedGames/genre/:genreTitle?/:id"
-            element={<CompleteGameInfo />}
-          />
-          <Route path="/SortedGames/sign-in" element={protectedRoute(user)} />
-
-          <Route element={<PrivateRoutes />}>
-            <Route path="/SortedGames/dashboard" element={<Dashboard />} />
-          </Route>
-
-          <Route
-            path="/SortedGames/search"
-            element={<Search scrollPositionY={scrollY} />}
-          />
-          <Route path="/SortedGames/api" element={<Api />} />
-          {/* <Route path="/SortedGames/Support" element={<Dashboard />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </div>
+        )}
+        <BrowserRouter>
+          <div className="sticky z-[3] top-0">
+            <Header scrollPosition={scrollPosition} />
+            <SideMenu />
+          </div>
+          <Routes>
+            <Route path="/SortedGames/" element={<Home />} />
+            <Route
+              path="/SortedGames/genre/:genreTitle/"
+              element={<Genre scrollPositionY={scrollY} />}
+            />
+            <Route
+              path="/SortedGames/genre/:genreTitle?/:id"
+              element={<CompleteGameInfo />}
+            />
+            <Route path="/SortedGames/sign-in" element={protectedRoute(user)} />
+            <Route element={<PrivateRoutes />}>
+              <Route path="/SortedGames/dashboard" element={<Dashboard />} />
+            </Route>
+            <Route
+              path="/SortedGames/search"
+              element={<Search scrollPositionY={scrollY} />}
+            />
+            <Route path="/SortedGames/api" element={<Api />} />
+            {/* <Route path="/SortedGames/Support" element={<Dashboard />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </>
   );
 }
 
