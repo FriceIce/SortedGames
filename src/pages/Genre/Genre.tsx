@@ -21,7 +21,6 @@ const Genre = () => {
   const allUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genreTitle}`;
   const alpahabeticalUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genreTitle}&sort-by=${filterOption}`;
 
-  console.log(genreTitle);
   useScrollToTop([genreTitle]);
 
   React.useEffect(() => {

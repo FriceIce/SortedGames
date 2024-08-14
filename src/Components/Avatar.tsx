@@ -20,7 +20,6 @@ const Avatar = () => {
   }, []);
 
   const setProfileImg = (avatarSrc: string | null) => {
-    console.log(avatarSrc);
     if (!user || !avatarSrc) return;
 
     const option = optionsWithBody(
