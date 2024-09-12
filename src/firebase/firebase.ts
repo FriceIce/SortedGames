@@ -18,13 +18,12 @@ import { AppDispatch } from "../redux/store";
 // Web app Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "sorted-games.firebaseapp.com",
+  authDomain: "sorted-g.firebaseapp.com",
   databaseURL: import.meta.env.VITE_FIREBASE_DB,
-  projectId: "sorted-games",
-  storageBucket: "sorted-games.appspot.com",
-  messagingSenderId: "147441363425",
-  appId: "1:147441363425:web:768d019d81300f73730aa0",
-  measurementId: "G-Q33ETRQZRD",
+  projectId: "sorted-g",
+  storageBucket: "sorted-g.appspot.com",
+  messagingSenderId: "990386126530",
+  appId: "1:990386126530:web:f2fa004bf22ee3d99ac55b",
 };
 
 // Initialize Firebase
@@ -193,13 +192,26 @@ export const readGameCategories = async (category: string, limit?: number) => {
   const gamesRef = ref(database, "games/" + category);
   return new Promise((resolve) => {
     onValue(gamesRef, (snapShot) => {
-      const data = snapShot.val() as { games: GameMiniCard[] };
+      const data = snapShot.val() as GameMiniCard[];
+      console.log(data)
+      const limitValue = limit ? limit : data.length -1;
       resolve(
-        data.games.filter((game, index) => {
-          if (limit === undefined) return game; // If no limit is set, return all games
-          if (index <= limit) return game;
-        })
+        data.slice(0, limitValue)
       );
     });
   });
 };
+
+// Write games to db
+// export const createDB = async (data: any) => {
+//   return set(ref(database, `games`), {
+//     popular: data[0].slice(0,101),
+//     mixed_games: data[1],
+//     fighting: data[2],
+//     moba: data[3]
+//   })
+//     .then(() => {
+//       console.log("data created successfully");
+//     })
+//     .catch(() => console.log("Failed to create data"));
+// };
