@@ -34,7 +34,7 @@ function App() {
   );
   const dispatch = useDispatch();
   useCheckUserState();
-  useMediaQuery(
+  const isDesktop = useMediaQuery(
     //This opens the sidmenu on desktop screens on application reloads.
     "(min-width: 1024px)",
     dispatch,
@@ -65,7 +65,7 @@ function App() {
     <>
       {/* <ReactQueryDevtools initialIsOpen={false} position="right" /> */}
       <div
-        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-screen w-screen hide-scrollbar`}
+        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-screen w-screen ${!isDesktop && 'hide-scrollbar'}`}
         id="sub_root"
         onScroll={getScrollPosition}
       >
@@ -87,20 +87,24 @@ function App() {
               path="/SortedGames/genre/:genreTitle/"
               element={<Genre scrollPositionY={scrollY} />}
             />
+
             <Route
               path="/SortedGames/genre/:genreTitle?/:id"
               element={<CompleteGameInfo />}
             />
+
             <Route path="/SortedGames/sign-in" element={protectedRoute(user)} />
+
             <Route element={<PrivateRoutes />}>
               <Route path="/SortedGames/dashboard" element={<Dashboard />} />
             </Route>
+
             <Route
               path="/SortedGames/search"
               element={<Search scrollPositionY={scrollY} />}
             />
+
             <Route path="/SortedGames/api" element={<Api />} />
-            {/* <Route path="/SortedGames/Support" element={<Dashboard />} /> */}
           </Routes>
         </BrowserRouter>
       </div>
