@@ -25,7 +25,7 @@ const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   // Get the param and put the value in the url
   const { genreTitle } = useParams();
   const query =
-    genreTitle?.toLocaleLowerCase() === "popular" ? "sort-by" : "category";
+    genreTitle?.toLocaleLowerCase() === "popularity" ? "sort-by" : "category";
 
   // url
   const allUrl = `https://free-to-play-games-database.p.rapidapi.com/api/games?${query}=${genreTitle}`;
@@ -67,7 +67,7 @@ const Genre = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
       <div className="text-xl space-y-2 mx-2">
         {data && (
           <h1 className="text-base text-center sm:text-lg sm:text-start uppercase">
-            {genreTitle?.replace(/[-&]/, " ")}: {filterOption}
+            {genreTitle === 'popularity' ? 'Popular' : genreTitle?.replace(/[-&]/, " ")} : {filterOption}
           </h1>
         )}
         {isLoading && (

@@ -23,7 +23,7 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
 
   const debounce = useDebounce(input.trim(), 500); //500ms delay before fetching games
   const amountOfGames = useFetchGamesOnScroll(scrollPositionY); //scroll position 1 --> 50 more games will be displayed.
-  const desktop = useMediaQuery("(min-width: 1024px)"); // Tailwind lg screen size
+  const isDesktop = useMediaQuery("(min-width: 1024px)"); // Tailwind lg screen size
   useContentIsLoaded();
   const { data } = useFetch(
     gameUrl(false, "games"),
@@ -66,7 +66,7 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
   return (
     <section
       className={`space-y-6 transition-all duration-200 ${
-        desktop && sidemenu && "ml-[210px]"
+        isDesktop && sidemenu && "ml-[210px]"
       }`}
     >
       <form
@@ -101,7 +101,7 @@ const Search = ({ scrollPositionY }: { scrollPositionY: boolean }) => {
           </div>
         )}
         {
-          <ul className="card-grid px-4">
+          <ul className="card-grid px-2">
             {gamesList.map((data: GameMiniCard, index) => {
               // Filter out games that does not include input values.
               if (index === gamesList.length - 1 && isLoading)

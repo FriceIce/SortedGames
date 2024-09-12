@@ -43,6 +43,7 @@ const SignIn = () => {
         .catch(() => {
           alert("Email already exists, try a different one.");
         });
+        
     if (!createAccount)
       signInWithEmailAndPassword(auth, email, password)
         .then(() => userStatus(dispatch))
@@ -54,6 +55,7 @@ const SignIn = () => {
 
   return (
     <div className="space-y-6 text-sm w-5/6 max-w-[470px] mx-auto">
+
       {/* Google button */}
       <div
         className="bg-white flex justify-center items-center gap-2 h-[38px] rounded-3xl mt-14 cursor-pointer"
@@ -76,6 +78,7 @@ const SignIn = () => {
 
       <FormProvider {...methods}>
         <form className="space-y-6" onSubmit={methods.handleSubmit(onSubmit)}>
+
           {/* Email and password input */}
           <div className="space-y-4">
             {createAccount && (
@@ -86,12 +89,14 @@ const SignIn = () => {
                 createAccount={false}
               />
             )}
+
             <Inputfield
               required={true}
               label={"email"}
               type={"text"}
               createAccount={createAccount ? true : false}
             />
+
             <div className="space-y-2">
               <Inputfield
                 required={true}
@@ -99,6 +104,7 @@ const SignIn = () => {
                 type={"password"}
                 createAccount={createAccount ? true : false}
               />
+              
               <p
                 className="text-[#7c61ec] w-max cursor-pointer"
                 onClick={() => {
@@ -109,6 +115,7 @@ const SignIn = () => {
               </p>
             </div>
           </div>
+          
           {/* Sign in button with create account */}
           <div className="font-semibold">
             <button

@@ -20,7 +20,6 @@ const SideMenuButton = () => {
         }`}
       ></div>
       <div className="h-[2px] w-6 sm:w-10 bg-white rounded-lg mx-auto"></div>
-      {/* <p className="text-xs text-center">Menu</p> */}
     </div>
   );
 };

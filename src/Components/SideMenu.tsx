@@ -62,6 +62,7 @@ const SideMenu = () => {
             setOpenProfileList={setOpenProfileList}
           />
         )}
+        
         {/* Genres option */}
         <div
           className={`w-max pr-2 ${

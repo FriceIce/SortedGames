@@ -25,11 +25,12 @@ const GenresList = ({ genresState }: { genresState: boolean }) => {
     >
       <ul className="space-y-3 overflow-hidden min-h-0">
         {genres.map((genre) => {
-          const param =
+          const param = genre.title === 'Popular' ? 'popularity' : 
             genre.title.toLocaleLowerCase() === "open world" ||
             genre.title.toLocaleLowerCase() === "battle royale"
               ? genre.title.replace(" ", "-")
-              : genre.title.replace(" ", "&");
+              : genre.title.replace(" ", "&")
+
           return (
             <li key={genre.title}>
               <Link
@@ -39,7 +40,7 @@ const GenresList = ({ genresState }: { genresState: boolean }) => {
               >
                 <img
                   src={genre.src}
-                  alt="genre.genre"
+                  alt="genre"
                   className="size-[54px] rounded-xl object-cover object-center"
                 />
                 <p className="font-normal text-sm">{genre.title}</p>

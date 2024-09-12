@@ -46,12 +46,11 @@ const Header = ({ scrollPosition }: { scrollPosition: boolean | null }) => {
       >
         <div className="flex-1 cursor-pointer" onClick={appNavigation}>
           <img
-            src="/SortedGames/icons/Sorted-Games.svg"
+            src="/SortedGames/icons/Sorted-Games.png"
             alt="Applikation icon"
             className="relative z-0 w-[150px] sm:w-[200px]"
             title="Go to home page"
           />
-          {/* )} */}
         </div>
 
         {desktop && (
