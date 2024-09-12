@@ -78,6 +78,7 @@ const CompleteGameInfo = () => {
                   </p>
                   <a
                     href={data.game_url}
+                    rel="noreferrer"
                     title={`Go to ${data.title} page.`}
                     className="bg-[#4799eb] flex justify-center gap-1 w-[77%] py-2 rounded-md cursor-pointer list-none text-white"
                   >

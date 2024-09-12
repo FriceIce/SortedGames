@@ -13,7 +13,9 @@ const Api = () => {
     >
       <h1>
         Visit{" "}
-        <a className="text-[#8870ec]" href="https://www.freetogame.com/api-doc">
+        <a className="text-[#8870ec]" 
+          rel="noreferrer"
+          href="https://www.freetogame.com/api-doc">
           Freetogame.com
         </a>{" "}
         to access the api documentation.
