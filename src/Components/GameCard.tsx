@@ -49,7 +49,7 @@ const GameCard = ({
           <div
             className={`bg-[#0000008e] ${
               !desktop ? "opacity-100" : "opacity-0 h-full"
-            } w-full h-10 grid place-items-center rounded-b-xl hover:opacity-100 hover:rounded-md`}
+            } w-full h-10 grid place-items-center rounded-b-md hover:opacity-100 lg:hover:rounded-md`}
           >
             <h2
               className={`text-white font-bold text-xs sm:text-sm text-wrap text-center truncate ${

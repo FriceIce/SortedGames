@@ -193,7 +193,7 @@ export const readGameCategories = async (category: string, limit?: number) => {
   return new Promise((resolve) => {
     onValue(gamesRef, (snapShot) => {
       const data = snapShot.val() as GameMiniCard[];
-      console.log(data)
+      // console.log(data)
       const limitValue = limit ? limit : data.length -1;
       resolve(
         data.slice(0, limitValue)
@@ -204,11 +204,11 @@ export const readGameCategories = async (category: string, limit?: number) => {
 
 // Write games to db
 // export const createDB = async (data: any) => {
-//   return set(ref(database, `games`), {
-//     popular: data[0].slice(0,101),
-//     mixed_games: data[1],
-//     fighting: data[2],
-//     moba: data[3]
+//   return update(ref(database, `games`), {
+//     // popular: data,
+//     // mixed_games: data,
+//     // fighting: data,
+//     // moba: data
 //   })
 //     .then(() => {
 //       console.log("data created successfully");

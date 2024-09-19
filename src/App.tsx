@@ -61,11 +61,12 @@ function App() {
     if (userState === false) return <SignIn />;
     if (userState) return <Navigate to={"/SortedGames/dashboard"} />;
   };
+
   return (
     <>
       {/* <ReactQueryDevtools initialIsOpen={false} position="right" /> */}
       <div
-        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-screen w-screen ${!isDesktop && 'hide-scrollbar'}`}
+        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-dvh pb-2 w-screen ${!isDesktop && 'hide-scrollbar'}`}
         id="sub_root"
         onScroll={getScrollPosition}
       >

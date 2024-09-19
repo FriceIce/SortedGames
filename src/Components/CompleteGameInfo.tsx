@@ -145,12 +145,12 @@ const CompleteGameInfo = () => {
               <SystemRequirements game={data} />
               <div className="space-y-4">
                 <h2 className="text-xl">{data.title} screenshots</h2>
-                <div className="flex gap-5 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   {data.screenshots.map((src) => (
                     <img
                       key={src.id}
                       src={src.image}
-                      className="w-[45%] max-w-[400px] rounded-lg"
+                      className="max-w-[400px] rounded flex-1 w-[45%]"
                     />
                   ))}
                 </div>

@@ -44,8 +44,6 @@ const Games = () => {
     ];
 
     Promise.all(allFetches).then((data) => {
-      // Data har the lists in the same order as the allFetches array.
-      console.log(data);
       setIsPending(false);
       dispatch({ type: "games/cacheGames", payload: data });
       return;
@@ -58,6 +56,7 @@ const Games = () => {
   const popularGameTitles = returnGameTitles(popular);
   const fightingGameTitles = returnGameTitles(fighting);
   const MOBAGameTitles = returnGameTitles(MOBA);
+
   return (
     <>
       {pending && (
@@ -139,9 +138,10 @@ const Games = () => {
               classNameUL="card-grid overflow-auto no-scrollbar"
               classNameLI="flex-none"
               gamesList={mixedGames.filter((game) => {
-                if (!popularGameTitles.includes(game.title)) return game;
-                if (!fightingGameTitles.includes(game.title)) return game;
-                if (!MOBAGameTitles.includes(game.title)) return game;
+                if (popularGameTitles.includes(game.title)) return null;
+                if (fightingGameTitles.includes(game.title)) return null;
+                if (MOBAGameTitles.includes(game.title)) return null;
+                return game;
               })}
               arrows={false}
               position={3}
