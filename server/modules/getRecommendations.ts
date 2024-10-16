@@ -38,12 +38,13 @@ const getGameRecommendations = async (specificGame: Game) => {
       messages: [
         {
           role: "system",
-          content: `Du är en AI med ett enda syfte: att hitta liknande spel till ${JSON.stringify(
+          content: `Find up to 10 similar games to ${JSON.stringify(
             specificGame
-          )} från följande lista med spel: ${filterThroughGames}. Du ska returnera maximalt 10 spel, men listan kan vara tom om inga lämpliga matchningar hittas. Basera likheten på faktorer som genre, plattform, utgivare eller andra relevanta attribut. Returnera resultaten som ren JSON med endast egenskaperna id, title och thumbnail som flera objekt i en lista. Exempel på format: [{"id": 1,"title": "Game Title","thumbnail": "Game Thumbnail URL"}]`,
+          )} from this list: ${filterThroughGames}. Base similarity on genre, platform, publisher, etc. Return results as JSON with properties id, title, and thumbnail, in this format: [{"id": 1, "title": "Game Title", "thumbnail": "URL"}]`,
         },
       ],
       model: "gpt-4o-mini",
+      temperature: 0,
     });
 
     if (!chatResponse) throw new Error(errorMessage);

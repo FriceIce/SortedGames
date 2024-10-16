@@ -43,7 +43,7 @@ const SideMenu = () => {
 
   return (
     <aside
-      className={`fixed inset-0 z-[1] h-full bg-[#101720f6] text-white rounded-tr-md ${
+      className={`fixed inset-0 z-[1] h-full w-[220px] bg-[#101720f6] text-white rounded-tr-md ${
         desktop ? "pt-[120px]" : "pt-[90px]"
       } ${
         desktop ? "w-max" : "w-full"
@@ -62,7 +62,7 @@ const SideMenu = () => {
             setOpenProfileList={setOpenProfileList}
           />
         )}
-        
+
         {/* Genres option */}
         <div
           className={`w-max pr-2 ${

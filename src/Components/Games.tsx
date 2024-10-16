@@ -109,7 +109,7 @@ const Games = () => {
               position={1}
             />
           </div>
-          
+
           <div className="space-y-1">
             <h2 className="text-base mx-3 font-semibold">
               MOBA Games{" "}

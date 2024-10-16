@@ -66,7 +66,9 @@ function App() {
     <>
       {/* <ReactQueryDevtools initialIsOpen={false} position="right" /> */}
       <div
-        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-dvh pb-2 w-screen ${!isDesktop && 'hide-scrollbar'}`}
+        className={`relative z-[2] overflow-y-auto overflow-x-hidden h-dvh pb-2 w-screen ${
+          !isDesktop && "hide-scrollbar"
+        }`}
         id="sub_root"
         onScroll={getScrollPosition}
       >
@@ -114,3 +116,97 @@ function App() {
 }
 
 export default App;
+
+export const similarGames = [
+  {
+    "id": 582,
+    "title": "Tarisland",
+    "thumbnail": "https://www.freetogame.com/g/582/thumbnail.jpg",
+    "short_description": "A cross-platform MMORPG developed by Level Infinite and Published by Tencent.",
+    "game_url": "https://www.freetogame.com/open/tarisland",
+    "genre": "MMORPG",
+    "platform": "PC (Windows)",
+    "publisher": "Tencent",
+    "developer": "Level Infinite",
+    "release_date": "2024-06-22",
+    "freetogame_profile_url": "https://www.freetogame.com/tarisland"
+  },
+  {
+    "id": 540,
+    "title": "Overwatch 2",
+    "thumbnail": "https://www.freetogame.com/g/540/thumbnail.jpg",
+    "short_description": "A hero-focused first-person team shooter from Blizzard Entertainment.",
+    "game_url": "https://www.freetogame.com/open/overwatch-2",
+    "genre": "Shooter",
+    "platform": "PC (Windows)",
+    "publisher": "Activision Blizzard",
+    "developer": "Blizzard Entertainment",
+    "release_date": "2022-10-04",
+    "freetogame_profile_url": "https://www.freetogame.com/overwatch-2"
+  },
+  {
+    "id": 516,
+    "title": "PUBG: BATTLEGROUNDS",
+    "thumbnail": "https://www.freetogame.com/g/516/thumbnail.jpg",
+    "short_description": "Get into the action in one of the longest running battle royale games PUBG Battlegrounds.",
+    "game_url": "https://www.freetogame.com/open/pubg",
+    "genre": "Shooter",
+    "platform": "PC (Windows)",
+    "publisher": "KRAFTON, Inc.",
+    "developer": "KRAFTON, Inc.",
+    "release_date": "2022-01-12",
+    "freetogame_profile_url": "https://www.freetogame.com/pubg"
+  },
+  {
+    "id": 508,
+    "title": "Enlisted",
+    "thumbnail": "https://www.freetogame.com/g/508/thumbnail.jpg",
+    "short_description": "Get ready to command your own World War II military squad in Gaijin and Darkflow Software’s MMO squad-based shooter Enlisted. ",
+    "game_url": "https://www.freetogame.com/open/enlisted",
+    "genre": "Shooter",
+    "platform": "PC (Windows)",
+    "publisher": "Gaijin Entertainment",
+    "developer": "Darkflow Software",
+    "release_date": "2021-04-08",
+    "freetogame_profile_url": "https://www.freetogame.com/enlisted"
+  },
+  {
+    "id": 345,
+    "title": "Forge of Empires",
+    "thumbnail": "https://www.freetogame.com/g/345/thumbnail.jpg",
+    "short_description": "A free to play 2D browser-based online strategy game, become the leader and raise your city.",
+    "game_url": "https://www.freetogame.com/open/forge-of-empires",
+    "genre": "Strategy",
+    "platform": "Web Browser",
+    "publisher": "InnoGames",
+    "developer": "InnoGames",
+    "release_date": "2012-04-17",
+    "freetogame_profile_url": "https://www.freetogame.com/forge-of-empires"
+  },
+  {
+    "id": 590,
+    "title": "Throne And Liberty",
+    "thumbnail": "https://www.freetogame.com/g/590/thumbnail.jpg",
+    "short_description": "A free-to-play multi-platorm MMORPG from NCSoft and Amazon Games.",
+    "game_url": "https://www.freetogame.com/open/throne-and-liberty",
+    "genre": "MMORPG",
+    "platform": "PC (Windows)",
+    "publisher": "Amazon Games",
+    "developer": "NCSoft",
+    "release_date": "2024-10-01",
+    "freetogame_profile_url": "https://www.freetogame.com/throne-and-liberty"
+  },
+  {
+    "id": 475,
+    "title": "Genshin Impact",
+    "thumbnail": "https://www.freetogame.com/g/475/thumbnail.jpg",
+    "short_description": "If you’ve been looking for a game to scratch that open-world action RPG itch, one with perhaps a bit of Asian flair, then you’re going to want to check out miHoYo’s Genshin Impact.",
+    "game_url": "https://www.freetogame.com/open/genshin-impact",
+    "genre": "Action RPG",
+    "platform": "PC (Windows)",
+    "publisher": "miHoYo",
+    "developer": "miHoYo",
+    "release_date": "2020-09-28",
+    "freetogame_profile_url": "https://www.freetogame.com/genshin-impact"
+  },
+] 

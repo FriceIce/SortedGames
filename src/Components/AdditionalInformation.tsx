@@ -2,7 +2,7 @@ import { Game } from "../definitions";
 
 const AdditionalInformation = ({ game }: { game: Game }) => {
   return (
-    <div className="w-full text-xs max-w-[568px]">
+    <div className="w-full text-xs max-w-[568px] lg:text-sm">
       <h2 className="text-xl mb-1">Additional Information</h2>
       <div className="flex justify-between flex-wrap">
         <div className="flex-1 my-1 space-y-1">

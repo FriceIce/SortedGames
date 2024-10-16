@@ -30,7 +30,7 @@ const SystemRequirements = ({ game }: { game: Game }) => {
               ({game.platform})
             </h3>
           </div>
-          <div className="space-y-3 text-xs">
+          <div className="space-y-3 text-xs lg:text-sm">
             <PC_browser_requirements data={requirements} />
           </div>
         </div>
