@@ -26,7 +26,7 @@ To run the application locally, follow these steps:
 Clone the repository:
 
 ```bash
-git clone https://github.com/{your-username}/sortedGames.git
+git clone https://github.com/FriceIce/sortedGames.git
 cd sortedGames
 ```
 
