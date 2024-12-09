@@ -56,3 +56,8 @@ Run the application:
 - **Search**: Use the search bar to find specific games.
 - **Game Details**: Click on a game card to view more details and system requirements.
 - **Authentication**: Sign in or create an account to save your favorite games.
+
+## Screenshots
+
+<img src="screenshots/sortedGames-desktop-popular.PNG" alt="Screenshot " width="500" style="width: 100%; max-width: 700px;">
+<img src="screenshots/sortedGames-desktop-game.PNG" alt="Screenshot " width="500" style="width: 100%; max-width: 700px;">
