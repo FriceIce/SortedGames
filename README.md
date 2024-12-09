@@ -1,30 +1,58 @@
-# React + TypeScript + Vite
+# SortedGames
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SortedGames is a web application that allows users to browse and search for free-to-play games. The application provides detailed information about each game, including system requirements, screenshots, and links to play the games. It also features user authentication, allowing users to save their favorite games.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Game Browsing**: Explore a wide variety of free-to-play games categorized by genre.
+- **Search Functionality**: Quickly find games using the search bar.
+- **Game Details**: View detailed information about each game, including descriptions, system requirements, and screenshots.
+- **User Authentication**: Sign up and log in using email and password or Google authentication.
+- **Save Favorite Games**: Users can save their favorite games to their profile for easy access later.
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend**: React, TypeScript, Vite
+- **State Management**: Redux Toolkit
+- **Routing**: React Router
+- **Firebase**: For user authentication and database storage
+- **CSS Framework**: Tailwind CSS for styling
+- **API**: Fetches game data from the Free-to-Play Games Database API
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+To run the application locally, follow these steps:
+
+Clone the repository:
+
+```bash
+git clone https://github.com/{your-username}/sortedGames.git
+cd sortedGames
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Install the dependencies
+
+```bash
+  npm install
+```
+
+Create a .env file in the root directory and add your Firebase and API keys:
+
+```plaintext
+  VITE_API_KEY=your_rapidapi_key
+  VITE_FIREBASE_API_KEY=your_firebase_api_key
+  VITE_FIREBASE_DB=your_firebase_database_url
+```
+
+Run the application:
+
+```bash
+  npm run dev
+```
+
+## Usage
+
+- **Home Page**: Browse through popular games and categories.
+- **Search**: Use the search bar to find specific games.
+- **Game Details**: Click on a game card to view more details and system requirements.
+- **Authentication**: Sign in or create an account to save your favorite games.
