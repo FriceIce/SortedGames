@@ -1,10 +1,8 @@
-import React, { lazy } from "react";
-// modules
+import React, { lazy, useState } from "react";
 
 // components
 const GamesCardList = lazy(() => import("./GamesCardList"));
 
-// Redux
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { readGameCategories } from "../firebase/firebase";
@@ -12,14 +10,18 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { returnGameTitles } from "../modules/gameFilterSystem";
 import { RootState } from "../redux/store";
 import LoadingScreen from "./LoadingScreen/LoadingScreen";
+import { GameMiniCard } from "../definitions";
+import useImagePreloader from "../hooks/useImagePreloader.ts";
 
 const Games = () => {
+  const [imageUrl, setImageUrl] = useState<string[]>([]);
   const { popular, MOBA, fighting, mixedGames } = useSelector(
     (state: RootState) => state.games
   );
   const dispatch = useDispatch();
   const [pending, setIsPending] = React.useState<boolean>(true);
   const desktop = useMediaQuery("(min-width: 1000px)");
+  const isLoaded = useImagePreloader(imageUrl);
 
   React.useEffect(() => {
     // If the fetch is not pending, set the contentIsLoaded state to true for removal of the loading indicator.
@@ -46,6 +48,9 @@ const Games = () => {
     Promise.all(allFetches).then((data) => {
       setIsPending(false);
       dispatch({ type: "games/cacheGames", payload: data });
+      const games = data as GameMiniCard[][];
+      const urls = games.flat().map((game) => game.thumbnail);
+      setImageUrl(urls);
       return;
     });
 
@@ -59,7 +64,7 @@ const Games = () => {
 
   return (
     <>
-      {pending && (
+      {pending && !isLoaded && (
         <div className="pt-10">
           <LoadingScreen loader="smallerLoaderAnimation" position="static" />
         </div>

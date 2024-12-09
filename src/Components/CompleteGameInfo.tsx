@@ -1,35 +1,32 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import FetchSpecificGame from "../hooks/fetchSpecificGame.ts";
 import useContentIsLoaded from "../hooks/useContentIsLoaded";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import useFetchSpecificGame from "../hooks/usefetchSpecificGame.ts";
 import useScrollToTop from "../hooks/useScrollToTop";
 import AdditionalInformation from "./AdditionalInformation";
 import CompleteGameInfoSkeletonLoader from "./CompleteGameInfoSkeletonLoader";
-import GameCard from "./GameCard";
 import SaveGameComponent from "./SaveGameComponent";
-import SimilarGames from "./SimilarGames";
 import SystemRequirements from "./SystemRequirements";
-import fetchRecommendations from "../hooks/fetchRecommendations.ts";
 
 const CompleteGameInfo = () => {
   // const [data, setFetchGame] = React.useState<Game | null>(null);
   const [readMore, setReadMore] = React.useState<boolean>(false);
   const [height, setHeight] = React.useState<number | undefined>(undefined);
-  const [showMore, setShowMore] = React.useState<boolean>(false);
+  const [hasMounted, setHasMounted] = React.useState<boolean>(false); // for some reason useRef does not work, so I had to do it with useState.
 
-  //Hooks
   const { id } = useParams();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
   useScrollToTop([]);
   useContentIsLoaded();
-  const { gameRecommendations, loading } = fetchRecommendations(String(id));
-  const { specificGame, screenshots, isLoading } = FetchSpecificGame(
+
+  const { specificGame, screenshots, isLoading } = useFetchSpecificGame(
     String(id)
   );
 
   React.useEffect(() => {
-    if (showMore) return;
+    if (!hasMounted) {
+      setHasMounted(true);
+      return;
+    }
 
     const calcHeight = () => {
       const element = document.getElementById(
@@ -43,24 +40,6 @@ const CompleteGameInfo = () => {
     if (!isLoading && specificGame) calcHeight();
     return () => {};
   }, [specificGame]);
-
-  const ShowMoreButton = (display: boolean) => {
-    return (
-      <button
-        onClick={() => setShowMore((prev) => !prev)}
-        className={`${
-          !display && "hidden"
-        } px-3 py-2 rounded border border-themePurple w-max mx-auto my-3 lg:m-0  lg:hover:bg-themePurple transition-all`}
-      >
-        Show more
-      </button>
-    );
-  };
-
-  if (showMore)
-    return (
-      <SimilarGames setShowMore={setShowMore} games={gameRecommendations} />
-    );
 
   return (
     <>
@@ -178,37 +157,6 @@ const CompleteGameInfo = () => {
                     />
                   ))}
                 </div>
-              </section>
-
-              <section
-                className={`space-y-4 ${
-                  gameRecommendations.length === 0 && "hidden"
-                }`}
-              >
-                <div className="flex justify-between ">
-                  <h2 className="text-base lg:text-xl">
-                    Similar to Call of Duty: Warzone
-                  </h2>
-
-                  {ShowMoreButton(isDesktop)}
-                </div>
-                <ul
-                  className={`${
-                    isDesktop
-                      ? "game-recommendation-grid"
-                      : "flex flex-col gap-1"
-                  }`}
-                >
-                  {gameRecommendations.slice(0, 4).map((game, index) => {
-                    return (
-                      <li key={String(game.id + index)} className="flex-none">
-                        <GameCard card={game} />
-                      </li>
-                    );
-                  })}
-
-                  {ShowMoreButton(!isDesktop)}
-                </ul>
               </section>
             </div>
           </div>
